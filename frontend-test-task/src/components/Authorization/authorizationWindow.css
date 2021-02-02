@@ -1,0 +1,83 @@
+
+a {
+    text-decoration: none !important;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+.authorizationForm {
+    margin-top: 200px;
+}
+
+.myform {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 1rem;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    outline: 0;
+    max-width: 800px;
+    width: 480px;
+}
+
+.greetingLabel {
+    padding: 0px;
+}
+
+.myBtn {
+    width: 449px;
+    color: white;
+}
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    outline: 0 none;
+}
+
+.form-input {
+    border: 2px solid rgb(229, 229, 229);
+}
+
+.form-input:focus {
+    border:2px solid rgb(240, 185, 11);
+}
+
+.form-input:hover {
+    border:2px solid rgb(194, 198, 204);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

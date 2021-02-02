@@ -1,0 +1,35 @@
+.navbar-items {
+    margin-left: 100px !important;
+}
+
+.navbar-item {
+    color: rgb(255, 255, 255) !important;
+}
+
+.navbar-item:hover {
+    color: rgb(240, 185, 11) !important;
+}
+
+.navbar-item:active {
+    color: rgb(240, 185, 11) !important;
+}
+
+.navbar-links {
+    background-color: rgb(18, 22, 28) !important;
+}
+
+.dropdown-link:focus {
+    background-color: rgb(18, 22, 28) !important;
+}
+
+.dropdown-link {
+    background-color: rgb(18, 22, 28) !important;
+}
+
+.dropdown-link-menu {
+    background-color: rgb(18, 22, 28) !important;
+}
+
+.stick {
+    color: rgb(244, 188, 12) !important;
+}

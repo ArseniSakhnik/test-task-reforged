@@ -17,6 +17,8 @@ namespace BackendTestTask.Helpers
         public DbSet<Company> Companies { get; set; }
         public DbSet<Quotation> Quotations { get; set; }
         public DbSet<Source> Sources { get; set; }
+        public DbSet<User> Users { get; set; }
+
         private IFinnhubAPIService _finnhubAPIService;
         private IMoexAPIService _moexAPIService;
 
@@ -39,12 +41,19 @@ namespace BackendTestTask.Helpers
                 .WithMany(c => c.Quotations)
                 .HasForeignKey(q => q.CompanyId);
 
+            modelBuilder.Entity<Company>().HasIndex(c => c.Ticker).IsUnique();
+
+            modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+
             modelBuilder.Entity<Source>().HasData(
-                new { Id = 1, Name = "Finnhub", BaseAPIUrl = "https://finnhub.io/api/v1/" },
-                new { Id = 2, Name = "Московская биржа", BaseAPIUrl = "https://iss.moex.com/iss/reference/" }
+                    new { Id = 1, Name = "Finnhub", BaseAPIUrl = "https://finnhub.io/api/v1/" },
+                    new { Id = 2, Name = "Московская биржа", BaseAPIUrl = "https://iss.moex.com/iss/reference/" }
                 );
 
-            modelBuilder.Entity<Company>().HasIndex(c => c.Ticker).IsUnique();
+            modelBuilder.Entity<User>().HasData(
+                    new User {Id = 1, Username = "admin", Password = "admin", Role = "Admin" },
+                    new User {Id = 2, Username = "user", Password = "user", Role = "User" }
+                );
 
             List<object> companies = new List<object>();
 

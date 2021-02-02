@@ -8,5 +8,6 @@ namespace BackendTestTask.Helpers
     public class AppSettings
     {
         public string FinnhubKey { get; set; }
+        public string Secret { get; set; }
     }
 }

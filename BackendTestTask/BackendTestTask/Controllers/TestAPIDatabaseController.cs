@@ -1,6 +1,8 @@
 ﻿using BackendTestTask.APIFetchersServices.FinnhubAPIService;
 using BackendTestTask.Helpers;
 using BackendTestTask.Services.CompanyService;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,7 +13,9 @@ using System.Threading.Tasks;
 namespace BackendTestTask.Controllers
 {
     [ApiController]
-    [Route("[Controller]")]
+    [Authorize]
+    [EnableCors("ClientPermission")]
+    [Route("[controller]")]
     public class TestAPIDatabaseController : ControllerBase
     {
 
@@ -26,23 +30,7 @@ namespace BackendTestTask.Controllers
             _companyService = companyService;
         }
 
-        //[HttpGet]
-        //public IEnumerable<Object> Get()
-        //{
-
-        //    //var rng = new Random();
-        //    //return Enumerable.Range(1, 5).Select(index => new 
-        //    //{
-        //    //    Date = DateTime.Now.AddDays(index),
-        //    //    TemperatureC = rng.Next(-20, 55),
-        //    //    Summary = Summaries[rng.Next(Summaries.Length)]
-        //    //})
-        //    //.ToArray();
-
-        //    //return CompanyService.GetCompanies();
-        //}
-
-        [HttpGet]
+        [HttpGet("get")]
         public object Get()
         {
             //var quoteTask = FetchAPIService.AddCompany("a", "a");
