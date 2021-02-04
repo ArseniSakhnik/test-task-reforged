@@ -32,7 +32,8 @@ namespace BackendTestTask.APIFetchersServices
             {
                 return new Quotation
                 {
-                    Company = company,
+                    SourceId = 1,
+                    CompanyId = company.Id,
                     Price = finnhubApiResponse.c,
                     CurrencyUnit = "USD",
                     Date = DateTime.Now
@@ -49,7 +50,8 @@ namespace BackendTestTask.APIFetchersServices
                 {
                     quotation = new Quotation
                     {
-                        Company = company,
+                        SourceId = 2,
+                        CompanyId = company.Id,
                         Price = (double)m[1],
                         CurrencyUnit = (string)m[2],
                         Date = DateTime.Now

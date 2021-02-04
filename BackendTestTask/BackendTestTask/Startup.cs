@@ -3,6 +3,8 @@ using BackendTestTask.APIFetchersServices.FinnhubAPIService;
 using BackendTestTask.APIFetchersServices.MoexAPIService;
 using BackendTestTask.Helpers;
 using BackendTestTask.Services.CompanyService;
+using BackendTestTask.Services.QuotationService;
+using BackendTestTask.Services.UpdateQuotationService;
 using BackendTestTask.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -90,6 +92,8 @@ namespace BackendTestTask
             services.AddScoped<IFinnhubAPIService, FinnhubAPIService>();
             services.AddScoped<IMoexAPIService, MoexAPIService>();
             services.AddScoped<IAPIFetcherService, APIFetcherService>();
+            services.AddScoped<IQuotationService, QuotationService>();
+            services.AddSingleton<UpdateQuotationService>();
             //services.AddScoped<IFinnhubAPIService, FinnhubAPIService>();
             //services.AddScoped<IMoexAPIService, MoexAPIService>();
             //services.AddScoped<IFetchAPIService, FetchAPIService>();
