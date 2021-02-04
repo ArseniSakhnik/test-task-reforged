@@ -3,14 +3,12 @@ using BackendTestTask.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace BackendTestTask.APIFetchersServices.FinnhubAPIService
 {
-    public class FinnhubAPIService
+    public class FinnhubAPIService : IFinnhubAPIService
     {
         private readonly IOptions<AppSettings> _options;
 
@@ -30,18 +28,20 @@ namespace BackendTestTask.APIFetchersServices.FinnhubAPIService
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    using (HttpResponseMessage res = await client.GetAsync(GetCompanyProfileUrl(ticker)))
+                    using (HttpResponseMessage res = client.GetAsync(GetCompanyProfileUrl(ticker)).Result)
                     {
                         using (HttpContent content = res.Content)
                         {
                             var data = await content.ReadAsStringAsync();
 
-                            if (data != "{}")
+                            FinnhubApiResponse finnhubApiResponse = null;
+
+                            if (data != "{\"c\":0,\"h\":0,\"l\":0,\"o\":0,\"pc\":0,\"t\":0}")
                             {
-                                FinnhubApiResponse finnhubApiResponse = JsonConvert.DeserializeObject<FinnhubApiResponse>(data);
+                                finnhubApiResponse = JsonConvert.DeserializeObject<FinnhubApiResponse>(data);
                             }
 
-                            return null;
+                            return finnhubApiResponse;
                         }
                     }
                 }

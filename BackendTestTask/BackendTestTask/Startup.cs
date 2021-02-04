@@ -1,3 +1,6 @@
+using BackendTestTask.APIFetchersServices;
+using BackendTestTask.APIFetchersServices.FinnhubAPIService;
+using BackendTestTask.APIFetchersServices.MoexAPIService;
 using BackendTestTask.Helpers;
 using BackendTestTask.Services.CompanyService;
 using BackendTestTask.Services.UserService;
@@ -84,6 +87,9 @@ namespace BackendTestTask
 
             services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IFinnhubAPIService, FinnhubAPIService>();
+            services.AddScoped<IMoexAPIService, MoexAPIService>();
+            services.AddScoped<IAPIFetcherService, APIFetcherService>();
             //services.AddScoped<IFinnhubAPIService, FinnhubAPIService>();
             //services.AddScoped<IMoexAPIService, MoexAPIService>();
             //services.AddScoped<IFetchAPIService, FetchAPIService>();

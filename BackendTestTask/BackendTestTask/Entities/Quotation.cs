@@ -14,7 +14,7 @@ namespace BackendTestTask.Entities
         public Company Company { get; set; }
         public int SourceId { get; set; }
         public Source Source { get; set; }
-        public float Price { get; set; }
+        public double Price { get; set; }
         public string CurrencyUnit { get; set; }
         public DateTime Date { get; set; }
     }
