@@ -1,5 +1,4 @@
-﻿using BackendTestTask.APIFetchersServices.FinnhubAPIService;
-using BackendTestTask.Helpers;
+﻿using BackendTestTask.Helpers;
 using BackendTestTask.Services.CompanyService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -20,13 +19,11 @@ namespace BackendTestTask.Controllers
     {
 
         private readonly ILogger<TestAPIDatabaseController> _logger;
-        private readonly IFinnhubAPIService _finnhubAPIService;
         private readonly ICompanyService _companyService;
 
-        public TestAPIDatabaseController(ILogger<TestAPIDatabaseController> logger, IFinnhubAPIService finnhubAPIService, ICompanyService companyService)
+        public TestAPIDatabaseController(ILogger<TestAPIDatabaseController> logger, ICompanyService companyService)
         {
             _logger = logger;
-            _finnhubAPIService = finnhubAPIService;
             _companyService = companyService;
         }
 
@@ -36,7 +33,7 @@ namespace BackendTestTask.Controllers
             //var quoteTask = FetchAPIService.AddCompany("a", "a");
             //return quoteTask;
             //var quoteTask = _finnhubAPIService.GetCompanies().Result;
-            var quoteTask = _companyService.GetCompanies();
+            //var quoteTask = _companyService.GetCompanies();
             return true;
             
         }

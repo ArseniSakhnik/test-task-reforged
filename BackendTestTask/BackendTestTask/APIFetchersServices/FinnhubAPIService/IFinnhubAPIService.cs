@@ -8,7 +8,6 @@ namespace BackendTestTask.APIFetchersServices.FinnhubAPIService
 {
     public interface IFinnhubAPIService
     {
-        ValueTask<List<StockSymbol>> GetCompanies();
-        ValueTask<string> GetCompanyNameByTicker(string ticker);
+        ValueTask<FinnhubApiResponse> GetCompanyProfileByTicker(string ticker);
     }
 }

@@ -1,0 +1,52 @@
+.cancel-button {
+    margin-left: 20px;
+}
+
+.save-button {
+    margin-left: -245px;
+}
+
+.companyTicker-input {
+    width: 270px;
+}
+
+.modalWindowHeader {
+    margin-top: 50px;
+    margin-bottom: 50px;
+    font-size: 2rem;
+    margin-left: -55px;
+}
+
+.input-label-name {
+    margin-left: -317px;
+}
+
+.input-label-ticker {
+    margin-left: -423px;
+}
+
+.first-style-button {
+    background-color: rgba(240, 185, 11, 255);
+    color: white;
+}
+
+.first-style-button:hover {
+    background-color: rgba(216, 167, 10, 255);
+    color: white;
+}
+
+.second-style-button {
+    background-color: white;
+    color: rgba(240, 185, 11, 255);
+}
+
+.second-style-button:hover {
+    background-color: rgba(254, 248, 231, 255);
+    color: rgba(240, 185, 11, 255);
+}
+
+.disabled-button:disabled {
+    background-color: rgba(229,229,229,255);
+    color: rgba(118,128,143,255);
+    border-color: rgba(229,229,229,255);
+}

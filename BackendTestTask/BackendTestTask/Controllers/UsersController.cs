@@ -35,28 +35,14 @@ namespace BackendTestTask.Controllers
             return Ok(user);
         }
 
-        [Authorize(Roles = Role.Admin)]
+        //[Authorize(Roles = Role.Admin)]
+        [Authorize]
         [HttpGet("get")]
         public IActionResult GetAll()
         {
             var users = _userService.GetAll();
             return Ok(users);
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            // only allow admins to access other user records
-            var currentUserId = int.Parse(User.Identity.Name);
-            if (id != currentUserId && !User.IsInRole(Role.Admin))
-                return Forbid();
-
-            var user = _userService.GetById(id);
-
-            if (user == null)
-                return NotFound();
-
-            return Ok(user);
+            //return Ok(int.Parse(this.User.Claims.First().Value));
         }
     }
 }

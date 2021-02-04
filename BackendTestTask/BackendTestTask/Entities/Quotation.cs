@@ -15,6 +15,7 @@ namespace BackendTestTask.Entities
         public int SourceId { get; set; }
         public Source Source { get; set; }
         public float Price { get; set; }
+        public string CurrencyUnit { get; set; }
         public DateTime Date { get; set; }
     }
 }

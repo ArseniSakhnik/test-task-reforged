@@ -1,9 +1,7 @@
-﻿using BackendTestTask.Entities;
-using BackendTestTask.Helpers;
+﻿using BackendTestTask.Helpers;
 using BackendTestTask.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,31 +10,27 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.APIFetchersServices.FinnhubAPIService
 {
-    public class FinnhubAPIService : IFinnhubAPIService
+    public class FinnhubAPIService
     {
         private readonly IOptions<AppSettings> _options;
+
         public FinnhubAPIService(IOptions<AppSettings> options)
         {
             _options = options;
         }
 
-        public string GetUrlCompanies(string key)
+        public string GetCompanyProfileUrl(string ticker)
         {
-            return $"https://finnhub.io/api/v1/stock/symbol?exchange=US&token={key}";
+            return $"https://finnhub.io/api/v1/quote?symbol={ticker}&token={_options.Value.FinnhubKey}";
         }
 
-        public string GetUrlCompanieProfile(string symbol, string key)
-        {
-            return $"https://finnhub.io/api/v1/stock/profile2?symbol={symbol}&token={key}";
-        }
-
-        public async ValueTask<List<StockSymbol>> GetCompanies()
+        public async ValueTask<FinnhubApiResponse> GetCompanyProfileByTicker(string ticker)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    using (HttpResponseMessage res = await client.GetAsync(GetUrlCompanies(_options.Value.FinnhubKey)))
+                    using (HttpResponseMessage res = await client.GetAsync(GetCompanyProfileUrl(ticker)))
                     {
                         using (HttpContent content = res.Content)
                         {
@@ -44,40 +38,9 @@ namespace BackendTestTask.APIFetchersServices.FinnhubAPIService
 
                             if (data != "{}")
                             {
-
-                                List<StockSymbol> stockSymbols = JsonConvert.DeserializeObject<List<StockSymbol>>(data);
-
-                                return stockSymbols;
+                                FinnhubApiResponse finnhubApiResponse = JsonConvert.DeserializeObject<FinnhubApiResponse>(data);
                             }
-                        }
-                    }
-                }
-                return null;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
 
-        public async ValueTask<string> GetCompanyNameByTicker(string ticker)
-        {
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    using (HttpResponseMessage res = await client.GetAsync(GetUrlCompanieProfile(ticker, _options.Value.FinnhubKey)))
-                    {
-                        using (HttpContent content = res.Content)
-                        {
-                            var data = await content.ReadAsStringAsync();
-
-                            if (data != "{}")
-                            {
-                                var dataObj = JObject.Parse(data);
-
-                                return $"{dataObj["name"]}";
-                            }
                             return null;
                         }
                     }

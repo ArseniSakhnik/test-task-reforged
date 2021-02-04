@@ -1,10 +1,47 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import './navbar.css'
+import {Link} from "react-router-dom";
 
 
 export default function Navbar() {
+
+    const [name, setName] = useState(() => {
+        return localStorage.getItem('userData') === null ? '' : JSON.parse(localStorage.getItem('userData')).username
+    })
+
+    const logOut = () => {
+        localStorage.removeItem('userData')
+        window.location.reload()
+    }
+
+    const navbarAuthorizedAttributes = () => {
+        return (
+            <div>
+                <ul className="navbar-nav ">
+                    <li className="nav-item">
+                        <a className="nav-link navbar-item" href="#">
+                            {name}
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link stick">
+                            |
+                        </a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link navbar-item" onClick={logOut}>
+                            Выход
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        )
+    }
+
+    console.log(name)
+
     return (
         <div>
             <nav className="navbar navbar-icon-top navbar-expand-lg navbar-dark bg-dark navbar-links">
@@ -21,9 +58,9 @@ export default function Navbar() {
                             </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link navbar-item" href="#">
+                            <Link to={{pathname: '/quotes'}} className="nav-link navbar-item" href="#">
                                 Котировки
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item dropdown">
                             <a className="nav-link dropdown-toggle navbar-item" href="#" id="navbarDropdown"
@@ -32,27 +69,11 @@ export default function Navbar() {
                                 Настройки
                             </a>
                             <div className="dropdown-menu dropdown-link-menu" aria-labelledby="navbarDropdown">
-                                <a className="dropdown-item navbar-item dropdown-link" href="#">Список компаний</a>
+                                <Link to={{pathname: '/companyList'}} className="dropdown-item navbar-item dropdown-link" href="#">Список компаний</Link>
                             </div>
                         </li>
                     </ul>
-                    <ul className="navbar-nav ">
-                        <li className="nav-item">
-                            <a className="nav-link navbar-item" href="#">
-                                Иванов И.И.
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link stick">
-                                |
-                            </a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link navbar-item" href="#">
-                                Выход
-                            </a>
-                        </li>
-                    </ul>
+                    {name.length > 0 ? navbarAuthorizedAttributes() : <div></div>}
                 </div>
             </nav>
         </div>

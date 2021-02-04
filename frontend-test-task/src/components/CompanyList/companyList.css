@@ -8,12 +8,14 @@ body {
 
 .companyList {
     margin-bottom: 50px;
+    margin-right: 680px;
+    margin-top: 100px;
 }
 
 .btn-add-company {
     margin-top: 30px;
     margin-bottom: 30px;
-    margin-left: 100px;
+    margin-right: 820px;
     color: white;
 }
 
@@ -51,3 +53,4 @@ body {
 .buttons {
     margin-left: 400px;
 }
+

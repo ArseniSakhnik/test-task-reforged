@@ -1,0 +1,16 @@
+.line {
+    display: inline;
+}
+
+.string {
+    text-align: left;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.buttons {
+    margin-top: 20px;
+    margin-left: 0px;
+}

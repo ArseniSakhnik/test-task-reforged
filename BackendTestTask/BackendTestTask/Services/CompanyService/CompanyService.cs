@@ -1,5 +1,6 @@
 ﻿using BackendTestTask.Entities;
 using BackendTestTask.Helpers;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,61 +18,97 @@ namespace BackendTestTask.Services.CompanyService
 
         public List<Company> GetCompanies()
         {
-            return DataContext.Companies.ToList();
+            try
+            {
+                return DataContext.Companies.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
-        public bool AddCompany(string name, string ticker)
+        public bool AddCompany(string companyName, string ticker)
         {
-            var company = DataContext.Companies.Where(c => c.Name == name && c.Ticker == ticker).SingleOrDefault();
-
-            if (company == null)
+            try
             {
-                return false;
+                if (companyName.Length > 0 && ticker.Length > 0)
+                {
+                    var company = DataContext.Companies.Where(c => c.Name == companyName && c.Ticker == ticker).SingleOrDefault();
+
+                    if (company != null)
+                    {
+                        return false;
+                    }
+
+                    company = new Company
+                    {
+                        Name = companyName,
+                        Ticker = ticker
+                    };
+
+                    DataContext.Companies.Add(company);
+                    DataContext.SaveChanges();
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
             }
-
-            company = new Company
+            catch (Exception ex)
             {
-                Name = name,
-                Ticker = ticker
-            };
-
-            DataContext.Companies.Add(company);
-
-            DataContext.SaveChanges();
-
-            return true;
-        }
-
-        public bool ChangeCompany(int id, string name, string ticker)
-        {
-            var company = DataContext.Companies.Where(c => c.Id == id).SingleOrDefault();
-
-            if (company == null)
-            {
-                return false;
+                throw ex;
             }
-
-            company.Name = name;
-            company.Ticker = ticker;
-
-            DataContext.SaveChanges();
-
-            return true;
         }
 
         public bool RemoveCompany(int id)
         {
-            var company = DataContext.Companies.Where(c => c.Id == id).SingleOrDefault();
-
-            if (company == null)
+            try
             {
-                return false;
+                var company = DataContext.Companies.Where(c => c.Id == id).SingleOrDefault();
+
+                if (company == null)
+                {
+                    return false;
+                }
+
+                DataContext.Companies.Remove(company);
+                DataContext.SaveChanges();
+
+                return true;
             }
-
-            DataContext.Companies.Remove(company);
-            DataContext.SaveChanges();
-
-            return true;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
+
+        public bool ChangeCompany(int id, string companyName, string ticker)
+        {
+            try
+            {
+                var company = DataContext.Companies.Where(c => c.Id == id).SingleOrDefault();
+
+                if (company == null)
+                {
+                    return false;
+                }
+
+                company.Name = companyName;
+                company.Ticker = ticker;
+
+                DataContext.SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

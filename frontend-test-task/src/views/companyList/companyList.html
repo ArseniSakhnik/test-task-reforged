@@ -11,10 +11,10 @@
 <div class="companyListPage">
     <h1 class="companyList">Список компаний</h1>
     <div class="main-content">
-        <button class="btn btn-warning btn-add-company">Добавить компанию</button>
+        <button type="button" class="btn btn-warning btn-add-company" data-toggle="modal" data-target="#exampleModal">Добавить компанию</button>
         <table class="table companyList-table">
             <thead>
-            <tr>
+            <tr class="company-list-table-head">
                 <th scope="col">Компания</th>
                 <th scope="col">Тикер</th>
                 <th></th>
@@ -24,17 +24,35 @@
             <tr>
                 <th scope="row">1</th>
                 <td>Mark</td>
-                <td>Otto</td>
+                <td>
+                    <div class="buttons">
+                        <button class="btn btn-warning redact-remove-company">Редактировать</button>
+                        |
+                        <button class="btn btn-warning redact-remove-company">Удалить</button>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <th scope="row">2</th>
                 <td>Jacob</td>
-                <td>Thornton</td>
+                <td>
+                    <div class="buttons">
+                        <button class="btn btn-warning redact-remove-company">Редактировать</button>
+                        |
+                        <button class="btn btn-warning redact-remove-company">Удалить</button>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <th scope="row">3</th>
                 <td>Larry</td>
-                <td>the Bird</td>
+                <td>
+                    <div class="buttons">
+                        <button class="btn btn-warning redact-remove-company">Редактировать</button>
+                        |
+                        <button class="btn btn-warning redact-remove-company">Удалить</button>
+                    </div>
+                </td>
             </tr>
             </tbody>
         </table>

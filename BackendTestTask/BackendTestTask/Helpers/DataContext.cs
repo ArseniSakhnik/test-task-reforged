@@ -1,6 +1,4 @@
-﻿using BackendTestTask.APIFetchersServices.FinnhubAPIService;
-using BackendTestTask.APIFetchersServices.MoexAPIService;
-using BackendTestTask.Entities;
+﻿using BackendTestTask.Entities;
 using BackendTestTask.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -19,13 +17,8 @@ namespace BackendTestTask.Helpers
         public DbSet<Source> Sources { get; set; }
         public DbSet<User> Users { get; set; }
 
-        private IFinnhubAPIService _finnhubAPIService;
-        private IMoexAPIService _moexAPIService;
-
-        public DataContext(DbContextOptions<DataContext> options, IFinnhubAPIService finnhubAPIService, IMoexAPIService moexAPIService) : base(options)
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-            _finnhubAPIService = finnhubAPIService;
-            _moexAPIService = moexAPIService;
             Database.EnsureCreated();
         }
 
@@ -51,48 +44,20 @@ namespace BackendTestTask.Helpers
                 );
 
             modelBuilder.Entity<User>().HasData(
-                    new User {Id = 1, Username = "admin", Password = "admin", Role = "Admin" },
-                    new User {Id = 2, Username = "user", Password = "user", Role = "User" }
+                    new User {Id = 1, Username = "admin", Password = "admin", Role = Role.Admin },
+                    new User {Id = 2, Username = "user", Password = "user", Role = Role.User }
                 );
 
-            List<object> companies = new List<object>();
 
-            List<string> tickersUsed = new List<string>();
-
-            var companieStockSymbols = _finnhubAPIService.GetCompanies().Result;
-
-
-            for (int i = 0; i < companieStockSymbols.Count; i++)
-            {
-                string ticker = companieStockSymbols[i].symbol;
-                companies.Add(
-                        new
-                        {
-                            Id = i + 1,
-                            Name = companieStockSymbols[i].description,
-                            Ticker = ticker
-                        }
-                    );
-                tickersUsed.Add(ticker);
-            }
-
-            MoexCompanie moexCompanies = _moexAPIService.GetMoexCompanies().Result;
-
-            int j = companies.Count + 1;
-
-            foreach (var s in moexCompanies.securities.data)
-            {
-                for (int i = 0; i < s.Count; i += 2, j++)
-                {
-                    string ticker = s[i];
-                    if (!tickersUsed.Contains(ticker))
-                    {
-                        companies.Add(new { Id = j, Ticker = s[i], Name = s[i + 1] });
-                    }
-                }
-            }
-
-            modelBuilder.Entity<Company>().HasData(companies);
+            modelBuilder.Entity<Company>().HasData(
+                    new Company { Id = 1, Name = "Сбербанк России", Ticker = "SBER" },
+                    new Company { Id = 2, Name = "Газпром", Ticker = "GAZP" },
+                    new Company { Id = 3, Name = "Совкомфлот", Ticker = "FLOT" },
+                    new Company { Id = 4, Name = "Tesla Inc", Ticker = "TSLA" },
+                    new Company { Id = 5, Name = "Apple Inc", Ticker = "AAPL" },
+                    new Company { Id = 6, Name = "Amazon.com Inc", Ticker = "AMZN" }
+                );
+            
 
 
 
