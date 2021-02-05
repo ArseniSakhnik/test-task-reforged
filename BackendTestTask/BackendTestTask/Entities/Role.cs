@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Entities
 {
+    /// <summary>
+    /// Сущность роли 
+    /// </summary>
     public static class Role
     {
         public const string Admin = "Admin";

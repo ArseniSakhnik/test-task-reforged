@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Entities
 {
+    /// <summary>
+    /// Сущность источника данных
+    /// </summary>
     public class Source
     {
         [Key]

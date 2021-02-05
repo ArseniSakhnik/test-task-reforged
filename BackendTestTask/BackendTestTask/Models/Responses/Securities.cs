@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Models.Responses
 {
+    /// <summary>
+    /// Вспомогательный класс для модели ответа с сервера moex
+    /// </summary>
     public class Securities
     {
         public List<string> columns { get; set; }

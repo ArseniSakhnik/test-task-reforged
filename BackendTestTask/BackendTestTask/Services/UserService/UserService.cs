@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Services.UserService
 {
+    /// <summary>
+    /// Сервис для работы с данными пользователями
+    /// </summary>
     public class UserService : IUserService
     {
         private readonly IOptions<AppSettings> _appSettings;
@@ -23,7 +26,12 @@ namespace BackendTestTask.Services.UserService
             _appSettings = appSettings;
             _dataContext = dataContext;
         }
-
+        /// <summary>
+        /// Аутентифицирует пользовяет
+        /// </summary>
+        /// <param name="username">Имя пользователя</param>
+        /// <param name="password">Пароль пользователя</param>
+        /// <returns></returns>
         public User Authenticate(string username, string password)
         {
             var user = _dataContext.Users.SingleOrDefault(x => x.Username == username && x.Password == password);
@@ -50,7 +58,6 @@ namespace BackendTestTask.Services.UserService
 
             return user.WithoutPassword();
         }
-
         public IEnumerable<User> GetAll()
         {
             return _dataContext.Users.WithoutPasswords();

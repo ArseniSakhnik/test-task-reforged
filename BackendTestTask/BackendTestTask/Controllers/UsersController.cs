@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Controllers
 {
+    /// <summary>
+    /// Контроллер пользователей
+    /// </summary>
     [Authorize]
     [ApiController]
     [Route("[controller]")]
@@ -23,6 +26,11 @@ namespace BackendTestTask.Controllers
             _userService = userService;
         }
 
+        /// <summary>
+        /// Аутентифицирует пользователя
+        /// </summary>
+        /// <param name="model">Модель запроса аутентификации</param>
+        /// <returns>Данные пользователя, если запрос был выполнен корректно, или BadRequest, если не был выполнен</returns>
         [AllowAnonymous]
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] AuthenticateModel model)
@@ -33,16 +41,6 @@ namespace BackendTestTask.Controllers
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             return Ok(user);
-        }
-
-        //[Authorize(Roles = Role.Admin)]
-        [Authorize]
-        [HttpGet("get")]
-        public IActionResult GetAll()
-        {
-            var users = _userService.GetAll();
-            return Ok(users);
-            //return Ok(int.Parse(this.User.Claims.First().Value));
         }
     }
 }

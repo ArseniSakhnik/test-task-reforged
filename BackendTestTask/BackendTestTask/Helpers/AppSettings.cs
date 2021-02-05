@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Helpers
 {
+    /// <summary>
+    /// Класс для получения настроек
+    /// </summary>
     public class AppSettings
     {
         public string FinnhubKey { get; set; }

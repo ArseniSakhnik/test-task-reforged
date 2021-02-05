@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Models.Requests
 {
+    /// <summary>
+    /// Модель запроса аутентификации
+    /// </summary>
     public class AuthenticateModel
     {
         [Required]

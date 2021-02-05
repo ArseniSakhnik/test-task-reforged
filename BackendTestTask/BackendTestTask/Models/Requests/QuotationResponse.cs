@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Models.Requests
 {
+    /// <summary>
+    /// Модель запроса с информацией о котировках
+    /// </summary>
     public class QuotationResponse
     {
         [Required]

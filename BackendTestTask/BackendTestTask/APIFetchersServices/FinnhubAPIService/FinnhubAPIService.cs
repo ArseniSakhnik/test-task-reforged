@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.APIFetchersServices.FinnhubAPIService
 {
+    /// <summary>
+    /// Класс для получения данных с Finnhubapi.io
+    /// </summary>
     public class FinnhubAPIService : IFinnhubAPIService
     {
         private readonly IOptions<AppSettings> _options;
@@ -16,11 +19,20 @@ namespace BackendTestTask.APIFetchersServices.FinnhubAPIService
         {
             _options = options;
         }
-
+        /// <summary>
+        /// Возвращает ссылку для получения данных через API 
+        /// </summary>
+        /// <param name="ticker">Symbol для получения интересующей компании</param>
+        /// <returns></returns>
         public string GetCompanyProfileUrl(string ticker)
         {
             return $"https://finnhub.io/api/v1/quote?symbol={ticker}&token={_options.Value.FinnhubKey}";
         }
+        /// <summary>
+        /// Возвращает объект ответа с сервера FinnhubApi
+        /// </summary>
+        /// <param name="ticker">Symbol для получения интересующей компании</param>
+        /// <returns>Ответ с сервера</returns>
 
         public async ValueTask<FinnhubApiResponse> GetCompanyProfileByTicker(string ticker)
         {

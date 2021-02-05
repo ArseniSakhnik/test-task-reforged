@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Controllers
 {
+    /// <summary>
+    /// Контроллер информации котировок
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class QuotationsController : ControllerBase
@@ -19,6 +22,10 @@ namespace BackendTestTask.Controllers
             _quotationService = quotationService;
         }
 
+        /// <summary>
+        /// Получает список котировок
+        /// </summary>
+        /// <returns>Список котировок, если запрос был выполнен, или BadRequest</returns>
         [HttpGet("get-quotations")]
         public IActionResult GetQuotations()
         {
@@ -32,6 +39,11 @@ namespace BackendTestTask.Controllers
             }
         }
 
+        /// <summary>
+        /// Получает список котировок по тикеру
+        /// </summary>
+        /// <param name="quotationResponse">Модель запроса котировок</param>
+        /// <returns>Список котировок, если запрос был выполнен, или BadRequest</returns>
         [HttpPost("get-quotations-by-ticker-and-date")]
         public IActionResult GetQuotationsByTicker([FromBody] QuotationResponse quotationResponse)
         {

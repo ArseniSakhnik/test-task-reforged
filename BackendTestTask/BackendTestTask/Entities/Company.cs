@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Entities
 {
+    /// <summary>
+    /// Сущность компании
+    /// </summary>
     public class Company
     {
         [Key]

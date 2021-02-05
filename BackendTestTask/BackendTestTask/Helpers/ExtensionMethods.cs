@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Helpers
 {
+    /// <summary>
+    /// Вспомогательный класс для аутентификации пользователя
+    /// </summary>
     public static class ExtensionMethods
     {
         public static IEnumerable<User> WithoutPasswords(this IEnumerable<User> users)

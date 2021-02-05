@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Services.CompanyService
 {
+    /// <summary>
+    /// Класс для работы с данными о компании
+    /// </summary>
     public class CompanyService : ICompanyService
     {
         private DataContext DataContext { get; set; }
@@ -15,7 +18,10 @@ namespace BackendTestTask.Services.CompanyService
         {
             DataContext = dataContext;
         }
-
+        /// <summary>
+        /// Возвращает список компании
+        /// </summary>
+        /// <returns>Список компаний</returns>
         public List<Company> GetCompanies()
         {
             try
@@ -27,7 +33,12 @@ namespace BackendTestTask.Services.CompanyService
                 throw ex;
             }
         }
-
+        /// <summary>
+        /// Добавляет компанию в базу данных
+        /// </summary>
+        /// <param name="companyName">Название компании</param>
+        /// <param name="ticker">Тикер компании</param>
+        /// <returns>true, если компания была добавлена или false, если нет</returns>
         public bool AddCompany(string companyName, string ticker)
         {
             try
@@ -63,7 +74,11 @@ namespace BackendTestTask.Services.CompanyService
                 throw ex;
             }
         }
-
+        /// <summary>
+        /// Удаляет компанию
+        /// </summary>
+        /// <param name="id">Id удаляемой компании</param>
+        /// <returns>true, если компания была удалена, или false, если нет</returns>
         public bool RemoveCompany(int id)
         {
             try
@@ -85,7 +100,13 @@ namespace BackendTestTask.Services.CompanyService
                 throw ex;
             }
         }
-
+        /// <summary>
+        /// Изменяет данные о компании
+        /// </summary>
+        /// <param name="id">Id изменяемой компании</param>
+        /// <param name="companyName">Имя компании</param>
+        /// <param name="ticker">Тикер компании</param>
+        /// <returns></returns>
         public bool ChangeCompany(int id, string companyName, string ticker)
         {
             try

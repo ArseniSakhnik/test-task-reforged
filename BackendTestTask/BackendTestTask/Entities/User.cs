@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Entities
 {
+    /// <summary>
+    /// Сущность пользователя
+    /// </summary>
     public class User
     {
         [Key]

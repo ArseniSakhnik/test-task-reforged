@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.APIFetchersServices
 {
+    /// <summary>
+    /// Сервис для получения данных API
+    /// </summary>
     public class APIFetcherService : IAPIFetcherService
     {
 
@@ -24,6 +27,11 @@ namespace BackendTestTask.APIFetchersServices
             _moexAPIService = moexAPIService;
         }
 
+        /// <summary>
+        /// Возвращает котировку компании
+        /// </summary>
+        /// <param name="company">Компания, котировку которой необходимо узнать</param>
+        /// <returns>Котировку с moex, если она была найдена, котировку с finnhub или null</returns>
         public async Task<Quotation> GetQuotation(Company company)
         {
             FinnhubApiResponse finnhubApiResponse = await _finnhubAPIService.GetCompanyProfileByTicker(company.Ticker);

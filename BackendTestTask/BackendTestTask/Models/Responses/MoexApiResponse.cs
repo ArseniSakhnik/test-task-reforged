@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Models.Responses
 {
+    /// <summary>
+    /// Модель ответа с сервера Moex
+    /// </summary>
     public class MoexApiResponse
     {
         public Securities securities { get; set; }

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Entities
 {
+    /// <summary>
+    /// Сущность котировки
+    /// </summary>
     public class Quotation
     {
         [Key]

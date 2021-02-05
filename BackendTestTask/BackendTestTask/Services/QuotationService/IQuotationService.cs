@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Services.QuotationService
 {
+    /// <summary>
+    /// Интерфейс для добавления сервиса
+    /// </summary>
     public interface IQuotationService
     {
         Task UpdateQuotations();

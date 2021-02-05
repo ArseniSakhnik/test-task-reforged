@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Helpers
 {
+    /// <summary>
+    /// Класс для соединения с базой данных
+    /// </summary>
     public class DataContext : DbContext
     {
         public DbSet<Company> Companies { get; set; }
@@ -21,7 +24,10 @@ namespace BackendTestTask.Helpers
         {
             Database.EnsureCreated();
         }
-
+        /// <summary>
+        /// Определяет ограничения бд и задает первоначальные данные
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Quotation>()

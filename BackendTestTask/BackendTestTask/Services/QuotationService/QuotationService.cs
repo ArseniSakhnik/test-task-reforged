@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Services.QuotationService
 {
+    /// <summary>
+    /// Класс для работы с данными о котировках
+    /// </summary>
     public class QuotationService : IQuotationService
     {
         private DataContext DataContext { get; set; }
@@ -26,7 +29,10 @@ namespace BackendTestTask.Services.QuotationService
             _aPIFetcherService = aPIFetcherService;
             _companyService = companyService;
         }
-
+        /// <summary>
+        /// Добавляет записи о котировках
+        /// </summary>
+        /// <returns></returns>
         public async Task UpdateQuotations()
         {
             if (!(DataContext.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
@@ -54,7 +60,10 @@ namespace BackendTestTask.Services.QuotationService
                 throw ex;
             }
         }
-
+        /// <summary>
+        /// Получает список котировок и компаний
+        /// </summary>
+        /// <returns>Список котировок ответов</returns>
         public List<QuotationResponse> GetQutationsAndCompanies()
         {
             try
@@ -82,7 +91,13 @@ namespace BackendTestTask.Services.QuotationService
                 throw ex;
             }
         }
-
+        /// <summary>
+        /// Получает список котировок по дате и тикеру
+        /// </summary>
+        /// <param name="ticker">Тикер компании</param>
+        /// <param name="startDate">Начальная дата</param>
+        /// <param name="endDate">Конечная дата</param>
+        /// <returns></returns>
         public List<QuotationResponse> GetQuotationsByTickerAndDate(string ticker, DateTime startDate, DateTime endDate)
         {
             try

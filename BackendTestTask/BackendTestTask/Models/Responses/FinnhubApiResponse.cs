@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Models
 {
+    /// <summary>
+    /// Модель ответа с сервера Finnhub
+    /// </summary>
     public class FinnhubApiResponse
     {
         public double c { get; set; }

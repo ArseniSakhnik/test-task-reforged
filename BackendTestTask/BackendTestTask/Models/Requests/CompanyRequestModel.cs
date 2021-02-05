@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Models.Requests
 {
+    /// <summary>
+    /// Модель запроса с данными о компании
+    /// </summary>
     public class CompanyRequestModel
     {
         [Required]

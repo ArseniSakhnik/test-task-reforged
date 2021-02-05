@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Controllers
 {
+    /// <summary>
+    /// Контроллер получения данных информации
+    /// </summary>
     [Authorize(Roles = Role.Admin)]
     [ApiController]
     [Route("[controller]")]
@@ -21,6 +24,10 @@ namespace BackendTestTask.Controllers
             _companyService = companyService;
         }
 
+        /// <summary>
+        /// Возвращает список компаний из базы данных
+        /// </summary>
+        /// <returns>Список компаний, если запрос был выполнен, или BadRequest</returns>
         [HttpGet("get-companies")]
         public IActionResult GetCompanies()
         {
@@ -41,6 +48,11 @@ namespace BackendTestTask.Controllers
             }
         }
 
+        /// <summary>
+        /// Добавляет компанию
+        /// </summary>
+        /// <param name="model">Запрос с данными компании</param>
+        /// <returns>Список компаний, если запрос был выполнен, или BadRequest</returns>
         [HttpPost("add-company")]
         public IActionResult AddCompany([FromBody] CompanyRequestModel model)
         {
@@ -61,6 +73,11 @@ namespace BackendTestTask.Controllers
             }
         }
 
+        /// <summary>
+        /// Удаляет компанию из базы данных
+        /// </summary>
+        /// <param name="model">Запрос с данными компании</param>
+        /// <returns>Список компаний, если запрос был выполнен, или BadRequest</returns>
         [HttpPost("remove-company")]
         public IActionResult RemoveCompany([FromBody] CompanyRequestModel model)
         {
@@ -81,6 +98,11 @@ namespace BackendTestTask.Controllers
             }
         }
 
+        /// <summary>
+        /// Изменяет компанию в базе данных
+        /// </summary>
+        /// <param name="model">Запрос с данными компании</param>
+        /// <returns>Список компаний, если запрос был выполнен, или BadRequest</returns>
         [HttpPost("change-company")]
         public IActionResult ChangeCompany([FromBody] CompanyRequestModel model)
         {

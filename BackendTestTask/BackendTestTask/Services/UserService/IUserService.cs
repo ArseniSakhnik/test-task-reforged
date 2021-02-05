@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Services.UserService
 {
+    /// <summary>
+    /// Сервис для добавления сервиса
+    /// </summary>
     public interface IUserService
     {
         User Authenticate(string username, string password);

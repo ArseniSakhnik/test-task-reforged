@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Models.Responses
 {
+    /// <summary>
+    /// Модель ответа для использования в клиентской части
+    /// </summary>
     public class QuotationResponse
     {
         public string CompanyName { get; set; }

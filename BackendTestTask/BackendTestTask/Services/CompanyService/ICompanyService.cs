@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BackendTestTask.Services.CompanyService
 {
+    /// <summary>
+    /// Интерфейс для добавления сервиса
+    /// </summary>
     public interface ICompanyService
     {
         List<Company> GetCompanies();
