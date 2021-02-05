@@ -17,10 +17,6 @@ export default class QuotationService {
         )
     }
 
-    convertDate = (year, month, day, hour, minute, second) => {
-
-    }
-
     getQuotationByTickerAndDate = (ticker, startDate, endDate) => {
 
         const user = JSON.parse(localStorage.getItem('userData'))

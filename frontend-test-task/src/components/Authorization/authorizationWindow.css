@@ -68,7 +68,11 @@ input[type="color"]:focus,
     border:2px solid rgb(194, 198, 204);
 }
 
-
+.disabled-auth:disabled {
+    background-color: rgba(229,229,229,255) !important;
+    color: rgba(118,128,143,255) !important;
+    border-color: rgba(229,229,229,255) !important;
+}
 
 
 

@@ -8,6 +8,16 @@ body {
     margin-right: 20px;
 }
 
+.btn-chart {
+    padding: 2px;
+    width: 75px;
+    margin-right: 2px;
+}
+
+.buttons-chart {
+    display: inline-block;
+}
+
 .quotes-table-chart {
     width: 100px;
 }
@@ -25,7 +35,7 @@ body {
     margin-left: auto;
     margin-right: auto;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 1100px;
+    width: 1300px;
 }
 
 .quote-table-area-chart {
@@ -55,4 +65,54 @@ body {
 
 .ticker-chart {
     color: rgba(240,185,11,255);
+}
+
+.chart-company-name {
+    font-family: "Helvetica Neue";
+    font-size: 25px;
+    display: inline-block;
+    float: left;
+}
+
+.words {
+    margin-left: -40px;
+}
+
+.chart-company-ticker {
+    font-size: 25px;
+    color: rgba(118,128,143,255);
+    margin-left: 2px;
+    display: inline-block;
+    float: left;
+}
+
+.chart-company-date {
+    font-size: 15px;
+    margin-left: 10px;
+    color: rgba(118,128,143,255);
+    display: inline-block;
+    float: left;
+    margin-top: 12px;
+}
+
+.active-row {
+    background-color: rgba(255,253,241,255);
+}
+
+.chart-company-price {
+    font-size: 25px;
+    display: inline-block;
+    float: left;
+}
+
+.chart-company-currencyUnit {
+    font-size: 25px;
+    margin-left: 5px;
+    display: inline-block;
+    float: left;
+}
+
+.words {
+    margin-left: -290px;
+    display: inline-block;
 }

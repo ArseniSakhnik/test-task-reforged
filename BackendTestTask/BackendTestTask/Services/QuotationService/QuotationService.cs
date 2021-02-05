@@ -35,7 +35,7 @@ namespace BackendTestTask.Services.QuotationService
                 {
                     var quotation = await _aPIFetcherService.GetQuotation(c);
                     if (quotation != null)
-                    { 
+                    {
                         DataContext.Quotations.Add(quotation);
                     }
                 }
@@ -57,8 +57,8 @@ namespace BackendTestTask.Services.QuotationService
 
                 List<QuotationResponse> quotationResponse = new List<QuotationResponse>();
 
-                foreach (var c in companies)
-                {
+                foreach (var c in companies.Where(c => c.Quotations.Count > 0))
+                { 
                     quotationResponse.Add(new QuotationResponse
                     {
                         CompanyName = c.Name,

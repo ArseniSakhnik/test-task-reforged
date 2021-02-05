@@ -47,6 +47,8 @@ body {
     background-color: white;
     border-color: rgba(240,185,11,255);
     color: rgba(240,185,11,255);
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .redact-remove-company:hover {
@@ -57,5 +59,9 @@ body {
 .buttons {
     margin-left: 400px;
     margin-top: 0px !important;
+}
+
+buttons-company-list {
+    margin-left: 10px;
 }
 

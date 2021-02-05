@@ -13,14 +13,14 @@ export default function RemoveModalWindow({id, name, ticker, removeCompany}) {
                         <div className='line string'>Удалить компанию <div className='line bold'>{name}</div> из списка?
                         </div>
                         <div className='buttons'>
-                            <button type="submit" className="btn btn-primary save-button btn-warning first-style-button"
+                            <button type="submit" className="btn btn-primary btn-warning first-style-button remove-button-modal"
                                     data-dismiss="modal"
                                     onClick={() => removeCompany(id, name, ticker)}
                             >Удалить
                             </button>
                             <button
                                 type='button'
-                                className="btn btn-primary cancel-button btn-warning second-style-button"
+                                className="btn btn-primary btn-warning second-style-button cancel-button-modal"
                                 data-dismiss="modal"
                             >Отмена
                             </button>

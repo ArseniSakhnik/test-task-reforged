@@ -4,6 +4,7 @@
 
 .string {
     text-align: left;
+    float: left;
 }
 
 .bold {
@@ -11,6 +12,17 @@
 }
 
 .buttons {
-    margin-top: 20px;
-    margin-left: 0px;
+    display: inline-block;
+    padding-top: 40px;
+    float: left;
+}
+
+.remove-button-modal {
+    display: inline-block;
+    margin-left: -635px;
+}
+
+.cancel-button-modal {
+    display: inline-block;
+    margin-left: 5px;
 }

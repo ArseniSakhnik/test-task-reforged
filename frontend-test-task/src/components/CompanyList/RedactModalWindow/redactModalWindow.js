@@ -16,7 +16,7 @@ export default function RedactModalWindow({type, id, name, ticker, changeCompany
     }, [id])
 
     useEffect(() => {
-        if (companyName.length == 0 || companyTicker.length == 0) {
+        if (companyName.replace(/\s/g, '').length == 0 || companyTicker.replace(/\s/g, '').length == 0) {
             setButtonClasses("btn btn-primary save-button btn-warning disabled-button")
             setDisabled(true)
         } else {
@@ -50,7 +50,7 @@ export default function RedactModalWindow({type, id, name, ticker, changeCompany
                 <div className="modal-content">
                     <div className="modal-body">
                         <h2 className='modalWindowHeader'>{type == 'redact' ? 'Редактирование компании' : 'Добавление компании'}</h2>
-                        <form onSubmit={type == 'redact' ? onRedactSubmit : onAddSubmit}>
+                        <form>
                             <div className="form-group">
                                 <label className='input-label-name'>Название компании</label>
                                 <input
@@ -69,13 +69,17 @@ export default function RedactModalWindow({type, id, name, ticker, changeCompany
                                     onChange={onCompanyTickerChanged}
                                 />
                             </div>
-                            <button type="submit" className={buttonClasses} disabled={disabled}>Сохранить</button>
+                            <button type="submit" className={buttonClasses} disabled={disabled}
+                                    onClick={type == 'redact' ? onRedactSubmit : onAddSubmit}
+                            data-dismiss={'modal'}>Сохранить
+                            </button>
                             <button
                                 type='button'
                                 className="btn btn-primary cancel-button btn-warning second-style-button"
                                 aria-label="Close"
                                 data-dismiss="modal"
-                            >Отменить</button>
+                            >Отменить
+                            </button>
                         </form>
                     </div>
                 </div>

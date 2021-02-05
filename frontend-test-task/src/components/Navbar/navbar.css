@@ -1,0 +1,7 @@
+.loggOut-button {
+    cursor: pointer;
+}
+
+.active-link {
+    color: rgba(240,185,11,255) !important;
+}

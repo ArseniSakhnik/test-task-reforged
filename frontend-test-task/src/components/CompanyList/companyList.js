@@ -40,9 +40,10 @@ export default function CompanyList() {
                 console.log(response.data)
                 setCompanies(response.data)
             })
-            .catch((ex) => {
-                alert(ex.message)
-            })
+            .catch(() => {
+                    alert("Такой тикер уже есть в базе данных")
+                }
+            )
     }
 
     const addCompany = (id, name, ticker) => {
@@ -50,9 +51,8 @@ export default function CompanyList() {
             .then((response) => {
                 setCompanies(response.data)
             })
-            .catch((ex) => {
-                console.log(ex)
-                alert(ex.message)
+            .catch(() => {
+                alert("Такой тикер уже есть в базе данных")
             })
     }
 
@@ -74,7 +74,7 @@ export default function CompanyList() {
                     <th scope="row">{item.name}</th>
                     <td>{item.ticker}</td>
                     <td>
-                        <div className="buttons">
+                        <div className="buttons-company-list">
                             <button
                                 type="button"
                                 className="btn btn-warning redact-remove-company"
@@ -101,7 +101,8 @@ export default function CompanyList() {
 
     return (
         <div>
-            <RemoveModalWindow id={rowData.id} name={rowData.name} ticker={rowData.ticker} removeCompany={removeCompany}/>
+            <RemoveModalWindow id={rowData.id} name={rowData.name} ticker={rowData.ticker}
+                               removeCompany={removeCompany}/>
             <RedactModalWindow type={rowData.type} id={rowData.id} name={rowData.name} ticker={rowData.ticker}
                                changeCompany={changeCompany} addCompany={addCompany}/>
             <Navbar/>

@@ -14,6 +14,7 @@ export default function Authorization() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [activeButton, setActiveButton] = useState(true)
 
     const onUsernameChanged = (event) => {
         setUsername(event.target.value)
@@ -24,12 +25,13 @@ export default function Authorization() {
     }
 
     const handleSubmit = (event) => {
+        setActiveButton(false)
         event.preventDefault()
         userService.authentication(username, password)
             .then((response) => {
                 console.log(response.data)
                 localStorage.setItem('userData', JSON.stringify(response.data))
-                // window.location.reload()
+                window.location.reload()
             })
             .catch((e) => {
                 console.log('error')
@@ -37,17 +39,7 @@ export default function Authorization() {
                 if (e.message === 'Request failed with status code 400') {
                     setError('Неправильный логин или пароль')
                 }
-            })
-    }
-
-    const handleSubmitCheck = (event) => {
-        userService.getTest()
-            .then(response => {
-                console.log(response)
-            })
-            .catch((response) => {
-                console.log('error')
-                console.log(response)
+                setActiveButton(true)
             })
     }
 
@@ -85,7 +77,7 @@ export default function Authorization() {
                                         />
                                     </div>
                                     <div className="text-center ">
-                                        <button type="submit" className=" btn btn-warning btn-primary myBtn">Войти
+                                        <button type="submit" className=" btn btn-warning btn-primary myBtn disabled-auth" disabled={!activeButton}>Войти
                                         </button>
                                     </div>
                                 </form>
@@ -94,7 +86,6 @@ export default function Authorization() {
                         </div>
                     </div>
                 </div>
-                <button className={'warning'} onClick={handleSubmitCheck}>TEST</button>
             </div>
         </div>
     )

@@ -16,6 +16,29 @@ export default function Navbar() {
         window.location.reload()
     }
 
+    const settingsItem = () => {
+        console.log('here ')
+        if (localStorage.getItem('userData') !== null && JSON.parse(localStorage.getItem('userData')).role === 'Admin') {
+            return (
+                <li className="nav-item dropdown">
+                    <a className={window.location.href.includes('company-list') ? "nav-link dropdown-toggle navbar-item active-link" : 'nav-link dropdown-toggle navbar-item'}
+                       id="navbarDropdown"
+                       role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Настройки
+                    </a>
+                    <div className="dropdown-menu dropdown-link-menu" aria-labelledby="navbarDropdown">
+                        <Link to={{pathname: '/company-list'}}
+                              className={window.location.href.includes('company-list') ? "dropdown-item navbar-item dropdown-link active-link" : 'dropdown-item navbar-item dropdown-link'}
+                              href="#">Список компаний</Link>
+                    </div>
+                </li>
+            )
+        } else {
+            return <></>
+        }
+    }
+
     const navbarAuthorizedAttributes = () => {
         return (
             <div>
@@ -31,7 +54,7 @@ export default function Navbar() {
                         </a>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link navbar-item" onClick={logOut}>
+                        <a className="nav-link navbar-item loggOut-button" onClick={logOut}>
                             Выход
                         </a>
                     </li>
@@ -39,6 +62,7 @@ export default function Navbar() {
             </div>
         )
     }
+
 
     console.log(name)
 
@@ -53,25 +77,18 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse navbar-items" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <Link to={{pathname: '/charts'}} className="nav-link navbar-item" >
+                            <Link to={{pathname: '/charts'}}
+                                  className={window.location.href.includes('charts') ? "nav-link navbar-item active-link" : 'nav-link navbar-item'}>
                                 Графики
                             </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to={{pathname: '/quotationList-list'}} className="nav-link navbar-item" href="#">
+                            <Link to={{pathname: '/quotation-list'}}
+                                  className={window.location.href.includes('quotation-list') ? "nav-link navbar-item  active-link" : 'nav-link navbar-item'}>
                                 Котировки
                             </Link>
                         </li>
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle navbar-item" id="navbarDropdown"
-                               role="button" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                Настройки
-                            </a>
-                            <div className="dropdown-menu dropdown-link-menu" aria-labelledby="navbarDropdown">
-                                <Link to={{pathname: '/company-list'}} className="dropdown-item navbar-item dropdown-link" href="#">Список компаний</Link>
-                            </div>
-                        </li>
+                        {settingsItem()}
                     </ul>
                     {name.length > 0 ? navbarAuthorizedAttributes() : <div></div>}
                 </div>

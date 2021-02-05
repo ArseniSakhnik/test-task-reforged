@@ -117,7 +117,7 @@ export default function Chart({ticker, time}) {
     return (
         <div>
             <LineChart
-                width={500}
+                width={650}
                 height={300}
                 data={data}
                 margin={{

@@ -37,7 +37,7 @@ namespace BackendTestTask.Controllers
         {
             try
             {
-                //Я НЕ ЗНАЮ ПОЧЕМУ, НО СЕРВЕР ПЕРЕОБРАЗУЕТ ДАННЫЕ ИЗ JSON С 3Х ЧАСОВЫМ ОПОЗДАНИЕМ TimeZoneInfo.Local = {(UTC+03:00) Москва, Санкт-Петербург}
+                //Я НЕ ЗНАЮ ПОЧЕМУ, НО СЕРВЕР ПЕРЕОБРАЗУЕТ ДАННЫЕ ИЗ JSON С 3Х ЧАСОВЫМ ОПОЗДАНИЕМ ПРИТОМ, ЧТО UTC везде выдает правильный
                 DateTime startDate = quotationResponse.StartDate.AddHours(3);
                 DateTime endDate = quotationResponse.EndDate.AddHours(3);
 
