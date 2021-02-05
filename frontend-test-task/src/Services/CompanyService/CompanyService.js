@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default class CompanyService {
-    _apiBase = 'https://localhost:44370/'
+    _apiBase = '/'
 
     getCompanies = () => {
         const user = JSON.parse(localStorage.getItem('userData'))

@@ -20,6 +20,7 @@ using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,24 +95,16 @@ namespace BackendTestTask
             services.AddScoped<IAPIFetcherService, APIFetcherService>();
             services.AddScoped<IQuotationService, QuotationService>();
             services.AddSingleton<UpdateQuotationService>();
-            //services.AddScoped<IFinnhubAPIService, FinnhubAPIService>();
-            //services.AddScoped<IMoexAPIService, MoexAPIService>();
-            //services.AddScoped<IFetchAPIService, FetchAPIService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            
-
-            //app.UseCookiePolicy(new CookiePolicyOptions
-            //{
-            //    MinimumSameSitePolicy = SameSiteMode.Strict,
-            //    HttpOnly = HttpOnlyPolicy.Always,
-            //    Secure = CookieSecurePolicy.Always
-            //});
 
             app.UseCors("ClientPermission");
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
             app.UseAuthentication();
@@ -125,6 +118,18 @@ namespace BackendTestTask
                 endpoints.MapControllers();
             });
 
+            app.MapWhen(x => !x.Request.Path.Value.StartsWith("/companies") 
+            || !x.Request.Path.Value.StartsWith("/quotations")
+            || !x.Request.Path.Value.StartsWith("/users")
+            || !x.Request.Path.Value.StartsWith("/companies"), builder =>
+            {
+                app.Run(async (context) =>
+                {
+                    context.Response.ContentType = "text/html";
+                    context.Response.Headers[HeaderNames.CacheControl] = "no-store, no-cache, must-revalidate";
+                    await context.Response.SendFileAsync(Path.Combine(env.WebRootPath, "index.html"));
+                });
+            });
         }
     }
 }

@@ -5,6 +5,8 @@ using BackendTestTask.Models.Responses;
 using BackendTestTask.Services.CompanyService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +29,10 @@ namespace BackendTestTask.Services.QuotationService
 
         public async Task UpdateQuotations()
         {
+            if (!(DataContext.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
+            {
+                return;
+            }
             try
             {
                 var companies = _companyService.GetCompanies();
