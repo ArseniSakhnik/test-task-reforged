@@ -54,7 +54,14 @@ namespace BackendTestTask.APIFetchersServices
                         CompanyId = company.Id,
                         Price = (double)m[1],
                         CurrencyUnit = (string)m[2],
-                        Date = DateTime.Now
+                        Date = new DateTime(
+                                int.Parse(((string)m[3]).Substring(0, 4)),
+                                int.Parse(((string)m[3]).Substring(5, 2)),
+                                int.Parse(((string)m[3]).Substring(8, 2)),
+                                DateTime.Now.Hour,
+                                DateTime.Now.Minute,
+                                DateTime.Now.Second
+                            )
                     };
                 }
             }

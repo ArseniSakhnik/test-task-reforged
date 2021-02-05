@@ -4,6 +4,7 @@ using BackendTestTask.APIFetchersServices.MoexAPIService;
 using BackendTestTask.Entities;
 using BackendTestTask.Helpers;
 using BackendTestTask.Services.CompanyService;
+using BackendTestTask.Services.QuotationService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -27,14 +28,21 @@ namespace BackendTestTask.Controllers
         private readonly IMoexAPIService _moexAPIService;
         private readonly IFinnhubAPIService _finnhubAPIService;
         private readonly IAPIFetcherService _aPIFetcherService;
+        private readonly IQuotationService _quotationService;
 
-        public TestAPIDatabaseController(ILogger<TestAPIDatabaseController> logger, ICompanyService companyService, IMoexAPIService moexAPIService, IFinnhubAPIService finnhubAPIService, IAPIFetcherService aPIFetcherService)
+        public TestAPIDatabaseController(ILogger<TestAPIDatabaseController> logger, 
+            ICompanyService companyService, 
+            IMoexAPIService moexAPIService, 
+            IFinnhubAPIService finnhubAPIService, 
+            IAPIFetcherService aPIFetcherService,
+            IQuotationService quotationService)
         {
             _logger = logger;
             _companyService = companyService;
             _moexAPIService = moexAPIService;
             _finnhubAPIService = finnhubAPIService;
             _aPIFetcherService = aPIFetcherService;
+            _quotationService = quotationService;
         }
 
         [HttpGet("get")]
@@ -46,12 +54,9 @@ namespace BackendTestTask.Controllers
             //var quoteTask = _finnhubAPIService.GetCompanies().Result;
             //var quoteTask = _companyService.GetCompanies();
 
-            var company = new Company
-            {
-                Ticker = "SHIT"
-            };
+            
 
-            var test = _aPIFetcherService.GetQuotation(company);
+            var test = _quotationService.GetQutationsAndCompanies();
             
             return test;
             

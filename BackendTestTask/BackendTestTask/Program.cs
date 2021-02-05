@@ -24,7 +24,7 @@ namespace BackendTestTask
                 {
                     webBuilder.UseStartup<Startup>();
                 })
-                .ConfigureServices(services => 
+                .ConfigureServices(services =>
                 {
                     services.AddHostedService<UpdateQuotationService>();
                 });

@@ -6,6 +6,10 @@ body {
     margin-left: 50px;
 }
 
+.table-rows {
+    padding-bottom: 0px;
+}
+
 .companyList {
     margin-bottom: 50px;
     margin-right: 680px;
@@ -52,5 +56,6 @@ body {
 
 .buttons {
     margin-left: 400px;
+    margin-top: 0px !important;
 }
 

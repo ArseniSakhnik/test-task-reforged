@@ -53,23 +53,23 @@ export default function Navbar() {
                 <div className="collapse navbar-collapse navbar-items" id="navbarSupportedContent">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <a className="nav-link navbar-item" href="#">
+                            <Link to={{pathname: '/charts'}} className="nav-link navbar-item" >
                                 Графики
-                            </a>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <Link to={{pathname: '/quotes'}} className="nav-link navbar-item" href="#">
+                            <Link to={{pathname: '/quotationList-list'}} className="nav-link navbar-item" href="#">
                                 Котировки
                             </Link>
                         </li>
                         <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle navbar-item" href="#" id="navbarDropdown"
+                            <a className="nav-link dropdown-toggle navbar-item" id="navbarDropdown"
                                role="button" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
                                 Настройки
                             </a>
                             <div className="dropdown-menu dropdown-link-menu" aria-labelledby="navbarDropdown">
-                                <Link to={{pathname: '/companyList'}} className="dropdown-item navbar-item dropdown-link" href="#">Список компаний</Link>
+                                <Link to={{pathname: '/company-list'}} className="dropdown-item navbar-item dropdown-link" href="#">Список компаний</Link>
                             </div>
                         </li>
                     </ul>

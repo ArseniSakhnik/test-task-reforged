@@ -14,7 +14,7 @@ namespace BackendTestTask.APIFetchersServices.MoexAPIService
     {
         public string GetCopmaniesMoexUrl()
         {
-            return $"https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.data=on&iss.only=securities&securities.columns=SECID,PREVADMITTEDQUOTE,FACEUNIT";
+            return $"https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities.json?iss.meta=off&iss.data=on&iss.only=securities&securities.columns=SECID,PREVADMITTEDQUOTE,FACEUNIT,PREVDATE";
         }
 
         public async ValueTask<MoexApiResponse> GetMoexCompanies()

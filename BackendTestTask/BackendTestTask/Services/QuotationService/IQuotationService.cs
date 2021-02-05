@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackendTestTask.Models.Responses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,6 +9,9 @@ namespace BackendTestTask.Services.QuotationService
 {
     public interface IQuotationService
     {
-       Task UpdateQuotations();
+        Task UpdateQuotations();
+        List<QuotationResponse> GetQutationsAndCompanies();
+
+        List<QuotationResponse> GetQuotationsByTickerAndDate(string ticker, DateTime startDate, DateTime endDate);
     }
 }

@@ -1,25 +1,28 @@
 import './App.css';
 import {BrowserRouter as Router, Redirect, Route} from 'react-router-dom'
-import Navbar from "../Navbar";
 import Authorization from "../Authorization";
-import Quotes from "../Quotes/quotes";
+import QuotationList from "../QuotationList/quotationList";
 import CompanyList from "../CompanyList";
+import ChartPage from "../ChartPage";
 
 function App() {
     return (
         <Router>
             <div className="App">
                 <Route path={'/authentication'}>
-                    {localStorage.getItem('userData') === null ? <Authorization/> : <Redirect to={'/quotes'}/>}
+                    {localStorage.getItem('userData') === null ? <Authorization/> : <Redirect to={'/QuotationList-list'}/>}
                 </Route>
                 <Route exact strict path={'/'}>
-                    {localStorage.getItem('userData') === null ? <Authorization/> : <Redirect to={'/quotes'}/>}
+                    {localStorage.getItem('userData') === null ? <Authorization/> : <Redirect to={'/QuotationList-list'}/>}
                 </Route>
-                <Route path={'/companyList'}>
+                <Route path={'/company-list'}>
                     {localStorage.getItem('userData') === null ? <Authorization/> : <CompanyList/>}
                 </Route>
-                <Route path={'/quotes'}>
-                    {localStorage.getItem('userData') === null ? <Authorization/> : <Quotes/>}
+                <Route path={'/quotationList-list'}>
+                    {localStorage.getItem('userData') === null ? <Authorization/> : <QuotationList/>}
+                </Route>
+                <Route path={'/charts'}>
+                    {localStorage.getItem('userData') === null ? <Authorization/> : <ChartPage/>}
                 </Route>
             </div>
         </Router>
