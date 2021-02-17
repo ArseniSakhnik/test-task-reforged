@@ -13,5 +13,6 @@ namespace BackendTestTask.Helpers
         public string FinnhubKey { get; set; }
         public string Secret { get; set; }
         public int UpdateMinutes { get; set; }
+        public string ConnectionString { get; set; }
     }
 }

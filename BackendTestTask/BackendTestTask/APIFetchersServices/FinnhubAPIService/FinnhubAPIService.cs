@@ -1,5 +1,6 @@
 ﻿using BackendTestTask.Helpers;
 using BackendTestTask.Models;
+using BackendTestTask.Services.SourceService;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
@@ -14,10 +15,13 @@ namespace BackendTestTask.APIFetchersServices.FinnhubAPIService
     public class FinnhubAPIService : IFinnhubAPIService
     {
         private readonly IOptions<AppSettings> _options;
+        private readonly ISourceService _sourceService;
 
-        public FinnhubAPIService(IOptions<AppSettings> options)
+        public FinnhubAPIService(IOptions<AppSettings> options, ISourceService sourceService)
         {
             _options = options;
+            _sourceService = sourceService;
+
         }
         /// <summary>
         /// Возвращает ссылку для получения данных через API 
@@ -26,14 +30,15 @@ namespace BackendTestTask.APIFetchersServices.FinnhubAPIService
         /// <returns></returns>
         public string GetCompanyProfileUrl(string ticker)
         {
-            return $"https://finnhub.io/api/v1/quote?symbol={ticker}&token={_options.Value.FinnhubKey}";
+            var source = _sourceService.GetSourceByName("Finnhub");
+            return source.BaseAPIUrl + $"quote?symbol={ticker}&token={_options.Value.FinnhubKey}";
         }
+
         /// <summary>
         /// Возвращает объект ответа с сервера FinnhubApi
         /// </summary>
         /// <param name="ticker">Symbol для получения интересующей компании</param>
         /// <returns>Ответ с сервера</returns>
-
         public async ValueTask<FinnhubApiResponse> GetCompanyProfileByTicker(string ticker)
         {
             try

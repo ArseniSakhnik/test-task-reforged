@@ -2,6 +2,8 @@
 using BackendTestTask.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,10 +21,20 @@ namespace BackendTestTask.Helpers
         public DbSet<Quotation> Quotations { get; set; }
         public DbSet<Source> Sources { get; set; }
         public DbSet<User> Users { get; set; }
+        private ILogger<DataContext> _logger;
 
-        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        public DataContext(DbContextOptions<DataContext> options, ILogger<DataContext> logger) : base(options)
         {
-            Database.EnsureCreated();
+            _logger = logger;
+            ///Общее, Пункт 4. Наверное не лучшее решение. Исключение появляется когда бэк и фронт работаю не через корс. Не знаю почему.   
+            try
+            {
+                Database.EnsureCreated();
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning($"The following exception was thrown during database creation: {ex.Message}");
+            }
         }
         /// <summary>
         /// Определяет ограничения бд и задает первоначальные данные
@@ -46,12 +58,12 @@ namespace BackendTestTask.Helpers
 
             modelBuilder.Entity<Source>().HasData(
                     new { Id = 1, Name = "Finnhub", BaseAPIUrl = "https://finnhub.io/api/v1/" },
-                    new { Id = 2, Name = "Московская биржа", BaseAPIUrl = "https://iss.moex.com/iss/reference/" }
+                    new { Id = 2, Name = "Московская биржа", BaseAPIUrl = "https://iss.moex.com/iss/engines/" }
                 );
 
             modelBuilder.Entity<User>().HasData(
-                    new User {Id = 1, Username = "admin", Password = "admin", Role = Role.Admin },
-                    new User {Id = 2, Username = "user", Password = "user", Role = Role.User }
+                    new User { Id = 1, Username = "admin", Password = "admin", Role = Role.Admin },
+                    new User { Id = 2, Username = "user", Password = "user", Role = Role.User }
                 );
 
 
@@ -63,9 +75,6 @@ namespace BackendTestTask.Helpers
                     new Company { Id = 5, Name = "Apple Inc", Ticker = "AAPL" },
                     new Company { Id = 6, Name = "Amazon.com Inc", Ticker = "AMZN" }
                 );
-            
-
-
 
             base.OnModelCreating(modelBuilder);
         }

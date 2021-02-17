@@ -4,6 +4,7 @@ using BackendTestTask.APIFetchersServices.MoexAPIService;
 using BackendTestTask.Helpers;
 using BackendTestTask.Services.CompanyService;
 using BackendTestTask.Services.QuotationService;
+using BackendTestTask.Services.SourceService;
 using BackendTestTask.Services.UpdateQuotationService;
 using BackendTestTask.Services.UserService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -39,9 +40,6 @@ namespace BackendTestTask
         }
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = "Server=(localdb)\\mssqllocaldb;Database=test_task;Trusted_Connection=True;";
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddCors(options =>
@@ -58,14 +56,17 @@ namespace BackendTestTask
 
             services.AddMvc(options => options.EnableEndpointRouting = false);
 
-
-
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
 
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 
             var appSettings = appSettingsSection.Get<AppSettings>();
+
+            //Пункт 1. Добавили в конфиг файл строку подключения
+            string connection = appSettings.ConnectionString;
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
+
             var key = Encoding.ASCII.GetBytes(appSettings.Secret);
 
             services.AddAuthentication(options =>
@@ -94,14 +95,18 @@ namespace BackendTestTask
             services.AddScoped<IMoexAPIService, MoexAPIService>();
             services.AddScoped<IAPIFetcherService, APIFetcherService>();
             services.AddScoped<IQuotationService, QuotationService>();
+            services.AddScoped<ISourceService, SourceService>();
             services.AddSingleton<UpdateQuotationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-            app.UseCors("ClientPermission");
+            ///Пункт 2 - добавили CORS только при девелопменте
+            if (env.IsDevelopment())
+            {
+                app.UseCors("ClientPermission");
+            }
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -118,10 +123,11 @@ namespace BackendTestTask
                 endpoints.MapControllers();
             });
 
-            app.MapWhen(x => !x.Request.Path.Value.StartsWith("/companies") 
-            || !x.Request.Path.Value.StartsWith("/quotations")
-            || !x.Request.Path.Value.StartsWith("/users")
-            || !x.Request.Path.Value.StartsWith("/companies"), builder =>
+            app.MapWhen(x => !x.Request.Path.Value.StartsWith("/companies")
+                || !x.Request.Path.Value.StartsWith("/quotations")
+                || !x.Request.Path.Value.StartsWith("/users")
+                || !x.Request.Path.Value.StartsWith("/companies"), 
+            builder =>
             {
                 app.Run(async (context) =>
                 {

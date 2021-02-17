@@ -12,7 +12,7 @@ namespace BackendTestTask.Services.CompanyService
     public interface ICompanyService
     {
         List<Company> GetCompanies();
-        bool AddCompany(string companyName, string ticker);
+        Company AddCompany(string companyName, string ticker);
         bool RemoveCompany(int id);
         bool ChangeCompany(int id, string companyName, string ticker);
     }

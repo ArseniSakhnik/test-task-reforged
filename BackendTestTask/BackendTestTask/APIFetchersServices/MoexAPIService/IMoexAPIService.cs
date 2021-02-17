@@ -12,6 +12,7 @@ namespace BackendTestTask.APIFetchersServices.MoexAPIService
     /// </summary>
     public interface IMoexAPIService
     {
-        ValueTask<MoexApiResponse> GetMoexCompanies();
+        //ValueTask<MoexApiResponse> GetMoexCompanies();
+        ValueTask<MoexApiResponse> GetCompanyProfileByTicker(string ticker);
     }
 }

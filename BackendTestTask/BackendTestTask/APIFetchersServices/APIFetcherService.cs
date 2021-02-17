@@ -19,7 +19,6 @@ namespace BackendTestTask.APIFetchersServices
 
         private readonly IFinnhubAPIService _finnhubAPIService;
         private readonly IMoexAPIService _moexAPIService;
-        private DataContext DataContext { get; set; }
 
         public APIFetcherService(IFinnhubAPIService finnhubAPIService, IMoexAPIService moexAPIService)
         {
@@ -42,40 +41,27 @@ namespace BackendTestTask.APIFetchersServices
                 {
                     SourceId = 1,
                     CompanyId = company.Id,
-                    Price = finnhubApiResponse.c,
-                    CurrencyUnit = "USD",
+                    Price = finnhubApiResponse.Price,
+                    CurrencyUnit = finnhubApiResponse.CurrencyUnit,
                     Date = DateTime.Now
                 };
             }
 
-            MoexApiResponse moexApiResponse = await _moexAPIService.GetMoexCompanies();
+            MoexApiResponse moexApiResponse = await _moexAPIService.GetCompanyProfileByTicker(company.Ticker);
 
-            Quotation quotation = null;
-
-            foreach (var m in moexApiResponse.securities.data)
+            if (moexApiResponse != null)
             {
-                if ((string)m[0] == company.Ticker)
+                return new Quotation
                 {
-                    quotation = new Quotation
-                    {
-                        SourceId = 2,
-                        CompanyId = company.Id,
-                        Price = (double)m[1],
-                        CurrencyUnit = (string)m[2],
-                        Date = new DateTime(
-                                int.Parse(((string)m[3]).Substring(0, 4)),
-                                int.Parse(((string)m[3]).Substring(5, 2)),
-                                int.Parse(((string)m[3]).Substring(8, 2)),
-                                DateTime.Now.Hour,
-                                DateTime.Now.Minute,
-                                DateTime.Now.Second
-                            )
-                    };
-                }
+                    SourceId = 2,
+                    CompanyId = company.Id,
+                    Price = moexApiResponse.Price,
+                    CurrencyUnit = moexApiResponse.CurrencyUnit,
+                    Date = moexApiResponse.Date
+                };
             }
 
-            return quotation;
-
+            return null;
         }
     }
 }

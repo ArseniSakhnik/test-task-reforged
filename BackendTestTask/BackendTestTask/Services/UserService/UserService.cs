@@ -1,6 +1,7 @@
 ﻿using BackendTestTask.Entities;
 using BackendTestTask.Helpers;
 using BackendTestTask.Models.Requests;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -20,11 +21,13 @@ namespace BackendTestTask.Services.UserService
     {
         private readonly IOptions<AppSettings> _appSettings;
         private readonly DataContext _dataContext;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(IOptions<AppSettings> appSettings, DataContext dataContext)
+        public UserService(IOptions<AppSettings> appSettings, DataContext dataContext, ILogger<UserService> logger)
         {
             _appSettings = appSettings;
             _dataContext = dataContext;
+            _logger = logger;
         }
         /// <summary>
         /// Аутентифицирует пользовяет
@@ -38,7 +41,9 @@ namespace BackendTestTask.Services.UserService
 
             // return null if user not found
             if (user == null)
+            {
                 return null;
+            }
 
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -56,16 +61,6 @@ namespace BackendTestTask.Services.UserService
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
 
-            return user.WithoutPassword();
-        }
-        public IEnumerable<User> GetAll()
-        {
-            return _dataContext.Users.WithoutPasswords();
-        }
-
-        public User GetById(int id)
-        {
-            var user = _dataContext.Users.FirstOrDefault(x => x.Id == id);
             return user.WithoutPassword();
         }
 

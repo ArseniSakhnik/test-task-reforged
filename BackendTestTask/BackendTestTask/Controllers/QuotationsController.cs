@@ -1,6 +1,7 @@
 ﻿using BackendTestTask.Models.Requests;
 using BackendTestTask.Services.QuotationService;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +17,12 @@ namespace BackendTestTask.Controllers
     public class QuotationsController : ControllerBase
     {
         private readonly IQuotationService _quotationService;
+        private readonly ILogger<QuotationsController> _logger;
 
-        public QuotationsController(IQuotationService quotationService)
+        public QuotationsController(IQuotationService quotationService, ILogger<QuotationsController> logger)
         {
             _quotationService = quotationService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -29,12 +32,15 @@ namespace BackendTestTask.Controllers
         [HttpGet("get-quotations")]
         public IActionResult GetQuotations()
         {
+            _logger.LogInformation("Starting get-quotations request");
             try
             {
+                _logger.LogInformation("Returning a response to a request for get-quotations");
                 return Ok(_quotationService.GetQutationsAndCompanies());
             }
             catch (Exception ex)
             {
+                _logger.LogWarning("Failed to get-quotations");
                 return BadRequest(ex.Message);
             }
         }
@@ -47,8 +53,10 @@ namespace BackendTestTask.Controllers
         [HttpPost("get-quotations-by-ticker-and-date")]
         public IActionResult GetQuotationsByTicker([FromBody] QuotationResponse quotationResponse)
         {
+            _logger.LogInformation("Starting get-quotations-by-ticker-and-date request");
             try
             {
+                _logger.LogInformation("Returning a response to a request for get-quotations-by-ticker-and-date");
                 //Я НЕ ЗНАЮ ПОЧЕМУ, НО СЕРВЕР ПЕРЕОБРАЗУЕТ ДАННЫЕ ИЗ JSON С 3Х ЧАСОВЫМ ОПОЗДАНИЕМ ПРИТОМ, ЧТО UTC везде выдает правильный
                 DateTime startDate = quotationResponse.StartDate.AddHours(3);
                 DateTime endDate = quotationResponse.EndDate.AddHours(3);
@@ -57,6 +65,7 @@ namespace BackendTestTask.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogWarning("Failed to get-quotations-by-ticker-and-date request");
                 return BadRequest(ex.Message);
             }
         }

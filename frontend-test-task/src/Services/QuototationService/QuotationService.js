@@ -3,7 +3,7 @@ import axios from "axios";
 export default class QuotationService {
 
 
-    _apiBase = '/'
+    _apiBase = 'https://localhost:5001/'
 
     getLastQuotations = () => {
         const user = JSON.parse(localStorage.getItem('userData'))

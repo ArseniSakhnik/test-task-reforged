@@ -1,6 +1,7 @@
 ﻿using BackendTestTask.Entities;
 using BackendTestTask.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace BackendTestTask.Services.CompanyService
     /// </summary>
     public class CompanyService : ICompanyService
     {
+        private readonly ILogger<CompanyService> _logger;
         private DataContext DataContext { get; set; }
-        public CompanyService(DataContext dataContext)
+        public CompanyService(DataContext dataContext, ILogger<CompanyService> logger)
         {
             DataContext = dataContext;
+            _logger = logger;
         }
         /// <summary>
         /// Возвращает список компании
@@ -24,12 +27,15 @@ namespace BackendTestTask.Services.CompanyService
         /// <returns>Список компаний</returns>
         public List<Company> GetCompanies()
         {
+            _logger.LogInformation("Get companies from database");
             try
             {
+                _logger.LogInformation("Returning companies from database");
                 return DataContext.Companies.ToList();
             }
             catch (Exception ex)
             {
+                _logger.LogInformation($"An exception was received while working with the database: {ex.Message}");
                 throw ex;
             }
         }
@@ -39,7 +45,7 @@ namespace BackendTestTask.Services.CompanyService
         /// <param name="companyName">Название компании</param>
         /// <param name="ticker">Тикер компании</param>
         /// <returns>true, если компания была добавлена или false, если нет</returns>
-        public bool AddCompany(string companyName, string ticker)
+        public Company AddCompany(string companyName, string ticker)
         {
             try
             {
@@ -49,7 +55,7 @@ namespace BackendTestTask.Services.CompanyService
 
                     if (company != null)
                     {
-                        return false;
+                        return null;
                     }
 
                     company = new Company
@@ -61,11 +67,11 @@ namespace BackendTestTask.Services.CompanyService
                     DataContext.Companies.Add(company);
                     DataContext.SaveChanges();
 
-                    return true;
+                    return company;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
                 
             }

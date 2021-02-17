@@ -4,6 +4,7 @@ using BackendTestTask.Models.Requests;
 using BackendTestTask.Services.UserService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +21,12 @@ namespace BackendTestTask.Controllers
     public class UsersController : ControllerBase
     {
         private IUserService _userService;
+        private readonly ILogger<UsersController> _logger;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, ILogger<UsersController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -35,11 +38,15 @@ namespace BackendTestTask.Controllers
         [HttpPost("authenticate")]
         public IActionResult Authenticate([FromBody] AuthenticateModel model)
         {
+            _logger.LogInformation("Starting authenticate request");
             var user = _userService.Authenticate(model.Username, model.Password);
 
             if (user == null)
+            {
+                _logger.LogWarning("Failed to authenticate");
                 return BadRequest(new { message = "Username or password is incorrect" });
-
+            }
+            _logger.LogInformation("Returning a response to a request for authenticate");
             return Ok(user);
         }
     }

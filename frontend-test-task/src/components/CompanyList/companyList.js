@@ -6,6 +6,7 @@ import './companyList.css'
 import CompanyService from "../../Services/CompanyService";
 import RedactModalWindow from "./RedactModalWindow";
 import RemoveModalWindow from "./RemoveModalWindow";
+import {forEach} from "react-bootstrap/ElementChildren";
 
 export default function CompanyList() {
 
@@ -22,9 +23,14 @@ export default function CompanyList() {
 
     useEffect(() => {
         companyService.getCompanies().then((response) => {
+            console.log(response)
             setCompanies(response.data)
         })
     }, [])
+
+    useEffect(() => {
+        console.log(companies)
+    })
 
     const sendRowDataToModalWindow = (type, id, name, ticker) => {
         setRowData({
@@ -36,9 +42,24 @@ export default function CompanyList() {
     const changeCompany = (id, name, ticker) => {
         companyService.changeCompany(id, name, ticker)
             .then((response) => {
-                console.log('company was changed')
-                console.log(response.data)
-                setCompanies(response.data)
+
+                const changedCompanies = [...companies]
+
+                const changedCompany = {
+                    id: response.data.id,
+                    name: response.data.name,
+                    ticker: response.data.ticker
+                }
+
+                for (let i = 0; i < changedCompanies.length; i++) {
+                    if (changedCompanies[i].id === changedCompany.id) {
+                        changedCompanies[i] = changedCompany
+                        break;
+                    }
+                }
+
+                setCompanies(changedCompanies)
+
             })
             .catch(() => {
                     alert("Такой тикер уже есть в базе данных")
@@ -49,7 +70,12 @@ export default function CompanyList() {
     const addCompany = (id, name, ticker) => {
         companyService.addCompany(id, name, ticker)
             .then((response) => {
-                setCompanies(response.data)
+                const company = {
+                    id: response.data.id,
+                    name: response.data.name,
+                    ticker: response.data.ticker
+                }
+                setCompanies(oldCompanies => [...oldCompanies, company])
             })
             .catch(() => {
                 alert("Такой тикер уже есть в базе данных")
@@ -57,9 +83,12 @@ export default function CompanyList() {
     }
 
     const removeCompany = (id, name, ticker) => {
+        console.log('removing company')
+        console.log({id, name, ticker})
         companyService.removeCompany(id, name, ticker)
             .then(response => {
-                setCompanies(response.data)
+                const oldCompanies = [...companies].filter(item => item.id !== response.data.id)
+                setCompanies(oldCompanies)
             })
             .catch(ex => {
                 alert(ex.message)
@@ -96,7 +125,6 @@ export default function CompanyList() {
                 </tr>
             )
         })
-
     }
 
     return (

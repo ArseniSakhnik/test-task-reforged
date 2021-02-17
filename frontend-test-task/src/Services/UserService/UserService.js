@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default class UserService {
-    _apiBase = '/'
+    _apiBase = 'https://localhost:5001/'
 
     authentication = (username, password) => {
         return axios.post(this._apiBase + 'users/authenticate', {
