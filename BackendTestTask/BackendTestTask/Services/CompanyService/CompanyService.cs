@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,7 +36,7 @@ namespace BackendTestTask.Services.CompanyService
             }
             catch (Exception ex)
             {
-                _logger.LogInformation($"An exception was received while working with the database: {ex.Message}");
+                _logger.LogWarning($"An exception was received while working with the database: {ex.Message}");
                 throw ex;
             }
         }
@@ -47,36 +48,32 @@ namespace BackendTestTask.Services.CompanyService
         /// <returns>true, если компания была добавлена или false, если нет</returns>
         public Company AddCompany(string companyName, string ticker)
         {
+            _logger.LogInformation("Add company to databse");
             try
             {
-                if (companyName.Length > 0 && ticker.Length > 0)
+                var company = DataContext.Companies.Where(c => c.Name == companyName || c.Ticker == ticker).FirstOrDefault();
+
+                if (company != null)
                 {
-                    var company = DataContext.Companies.Where(c => c.Name == companyName && c.Ticker == ticker).SingleOrDefault();
-
-                    if (company != null)
-                    {
-                        return null;
-                    }
-
-                    company = new Company
-                    {
-                        Name = companyName,
-                        Ticker = ticker
-                    };
-
-                    DataContext.Companies.Add(company);
-                    DataContext.SaveChanges();
-
-                    return company;
+                    _logger.LogWarning("Company with specified name or/and ticker already exists");
+                    throw new DuplicateNameException();
                 }
-                else
+
+                company = new Company
                 {
-                    return null;
-                }
-                
+                    Name = companyName,
+                    Ticker = ticker
+                };
+
+                DataContext.Companies.Add(company);
+                DataContext.SaveChanges();
+                _logger.LogInformation("Company has been added to database");   
+                return company;
+
             }
             catch (Exception ex)
             {
+                _logger.LogWarning($"An exception was received while working with the database: {ex.Message}");
                 throw ex;
             }
         }
@@ -87,22 +84,25 @@ namespace BackendTestTask.Services.CompanyService
         /// <returns>true, если компания была удалена, или false, если нет</returns>
         public bool RemoveCompany(int id)
         {
+            _logger.LogInformation("Remove company from database");
             try
             {
                 var company = DataContext.Companies.Where(c => c.Id == id).SingleOrDefault();
 
                 if (company == null)
                 {
+                    _logger.LogWarning("Company has not been found in databse");
                     return false;
                 }
 
                 DataContext.Companies.Remove(company);
                 DataContext.SaveChanges();
-
+                _logger.LogInformation("Company has been removed from database");
                 return true;
             }
             catch (Exception ex)
             {
+                _logger.LogWarning($"An exception was received while working with the database: {ex.Message}");
                 throw ex;
             }
         }
@@ -115,24 +115,35 @@ namespace BackendTestTask.Services.CompanyService
         /// <returns></returns>
         public bool ChangeCompany(int id, string companyName, string ticker)
         {
+            _logger.LogInformation("Change company from database");
             try
             {
                 var company = DataContext.Companies.Where(c => c.Id == id).SingleOrDefault();
 
                 if (company == null)
                 {
+                    _logger.LogWarning("Company has not been found");
                     return false;
+                }
+
+                var checkedCompany = DataContext.Companies.Where(c => c.Name == companyName || c.Ticker == ticker).FirstOrDefault();
+
+                if (checkedCompany != null)
+                {
+                    _logger.LogWarning("Company with specified ticker or/and company name already exists");
+                    throw new DuplicateNameException();
                 }
 
                 company.Name = companyName;
                 company.Ticker = ticker;
 
                 DataContext.SaveChanges();
-
+                _logger.LogInformation("Company has been changed");
                 return true;
             }
             catch (Exception ex)
             {
+                _logger.LogWarning($"An exception was received while working with the database: {ex.Message}");
                 throw ex;
             }
         }

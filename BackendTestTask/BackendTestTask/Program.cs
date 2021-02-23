@@ -23,10 +23,10 @@ namespace BackendTestTask
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureServices(services =>
+                {
+                    services.AddHostedService<UpdateQuotationService>();
                 });
-                //.ConfigureServices(services =>
-                //{
-                //    services.AddHostedService<UpdateQuotationService>();
-                //});
     }
 }

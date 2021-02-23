@@ -5,6 +5,9 @@ import UserService from "../../Services/UserService"
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import './authorizationWindow.css'
+import {useHistory} from 'react-router-dom'
+
+
 
 
 export default function Authorization() {
@@ -15,6 +18,7 @@ export default function Authorization() {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [activeButton, setActiveButton] = useState(true)
+    const history = useHistory()
 
     const onUsernameChanged = (event) => {
         setUsername(event.target.value)
@@ -25,24 +29,29 @@ export default function Authorization() {
     }
 
     const handleSubmit = (event) => {
-        setActiveButton(false)
-        event.preventDefault()
-        userService.authentication(username, password)
-            .then((response) => {
-                console.log(response.data)
-                localStorage.setItem('userData', JSON.stringify(response.data))
-                window.location.reload()
-            })
-            .catch((e) => {
-                console.log('error')
-                console.log(e.message)
-                if (e.message === 'Request failed with status code 400') {
-                    setError('Неправильный логин или пароль')
-                }
-                setActiveButton(true)
-            })
-    }
 
+        event.preventDefault()
+        if (username.replace(/\s/g, '').length > 0
+            && password.replace(/\s/g, '').length > 0) {
+            setActiveButton(false)
+            userService.authentication(username, password)
+                .then((response) => {
+                    localStorage.setItem('userData', JSON.stringify(response.data))
+                    history.go(0)
+                })
+                .catch((e) => {
+                    if (e.response) {
+                        setError(e.response.data)
+                    } else {
+                        setError(e.message)
+                    }
+
+                    setActiveButton(true)
+                })
+        } else {
+            setError('Please fill password and login field')
+        }
+    }
 
     return (
         <div className={'authorize'}>

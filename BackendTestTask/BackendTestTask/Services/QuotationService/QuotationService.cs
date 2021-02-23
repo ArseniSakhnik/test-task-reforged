@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,14 @@ namespace BackendTestTask.Services.QuotationService
         private DataContext DataContext { get; set; }
         private readonly IAPIFetcherService _aPIFetcherService;
         private readonly ICompanyService _companyService;
-        public QuotationService(DataContext dataContext, IAPIFetcherService aPIFetcherService, ICompanyService companyService)
+        private readonly ILogger<QuotationService> _logger;
+
+        public QuotationService(DataContext dataContext, IAPIFetcherService aPIFetcherService, ICompanyService companyService, ILogger<QuotationService> logger)
         {
             DataContext = dataContext;
             _aPIFetcherService = aPIFetcherService;
             _companyService = companyService;
+            _logger = logger;
         }
         /// <summary>
         /// Добавляет записи о котировках
@@ -35,10 +39,13 @@ namespace BackendTestTask.Services.QuotationService
         /// <returns></returns>
         public async Task UpdateQuotations()
         {
+            _logger.LogInformation("Update quotations in database");
             if (!(DataContext.GetService<IDatabaseCreator>() as RelationalDatabaseCreator).Exists())
             {
+                _logger.LogWarning("Database not exsists");
                 return;
             }
+
             try
             {
                 var companies = _companyService.GetCompanies();
@@ -51,12 +58,15 @@ namespace BackendTestTask.Services.QuotationService
                         DataContext.Quotations.Add(quotation);
                     }
                 }
-
+                
                 DataContext.SaveChanges();
+
+                _logger.LogInformation("Quotations has been updated");
 
             }
             catch (Exception ex)
             {
+                _logger.LogWarning($"An exception was received while working with the database: {ex.Message}");
                 throw ex;
             }
         }
@@ -66,6 +76,7 @@ namespace BackendTestTask.Services.QuotationService
         /// <returns>Список котировок ответов</returns>
         public List<QuotationResponse> GetQutationsAndCompanies()
         {
+            _logger.LogInformation("Get quotations and companies from database");
             try
             {
                 var companies = DataContext.Companies.Include(c => c.Quotations).ToList();
@@ -83,11 +94,12 @@ namespace BackendTestTask.Services.QuotationService
                         Date = c.Quotations.Last().Date
                     });
                 }
-
+                _logger.LogInformation("Quotations and companies has been got");
                 return quotationResponse;
             }
             catch (Exception ex)
             {
+                _logger.LogWarning($"An exception was received while working with the database: {ex.Message}");
                 throw ex;
             }
         }
@@ -100,6 +112,7 @@ namespace BackendTestTask.Services.QuotationService
         /// <returns></returns>
         public List<QuotationResponse> GetQuotationsByTickerAndDate(string ticker, DateTime startDate, DateTime endDate)
         {
+            _logger.LogInformation("Get quotations by ticker and date from database");
             try
             {
                 var company = DataContext.Companies.Where(c => c.Ticker == ticker).Include(c => c.Quotations).SingleOrDefault();
@@ -125,11 +138,12 @@ namespace BackendTestTask.Services.QuotationService
                         });
                     }
                 }
-
+                _logger.LogInformation("Quotations by ticker and date has been returned");
                 return quotationResponse;
             }
             catch (Exception ex)
             {
+                _logger.LogWarning($"An exception was received while working with the database: {ex.Message}");
                 throw ex;
             }
         }

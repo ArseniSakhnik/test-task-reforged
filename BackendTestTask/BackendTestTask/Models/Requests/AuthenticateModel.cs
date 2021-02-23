@@ -16,5 +16,7 @@ namespace BackendTestTask.Models.Requests
 
         [Required]
         public string Password { get; set; }
+        [Required]
+        public string Salt { get; set; }
     }
 }

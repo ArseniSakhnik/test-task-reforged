@@ -6,12 +6,10 @@ export default class QuotationService {
     _apiBase = 'https://localhost:5001/'
 
     getLastQuotations = () => {
-        const user = JSON.parse(localStorage.getItem('userData'))
         return axios.get(this._apiBase + 'quotations/get-quotations', {
                 withCredentials: true,
                 headers: {
-                    "Accept": "application/json",
-                    "Authorization": "Bearer " + user.token
+                    "Accept": "application/json"
                 }
             }
         )
@@ -19,7 +17,6 @@ export default class QuotationService {
 
     getQuotationByTickerAndDate = (ticker, startDate, endDate) => {
 
-        const user = JSON.parse(localStorage.getItem('userData'))
         return axios.post(this._apiBase + 'quotations/get-quotations-by-ticker-and-date',{
             ticker: ticker,
             startDate: startDate,
@@ -27,8 +24,7 @@ export default class QuotationService {
         }, {
             withCredentials: true,
             headers: {
-                "Accept": "application/json",
-                "Authorization": "Bearer " + user.token
+                "Accept": "application/json"
             }
         })
     }

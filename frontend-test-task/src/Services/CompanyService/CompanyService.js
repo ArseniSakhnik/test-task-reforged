@@ -32,7 +32,6 @@ export default class CompanyService {
     }
 
     addCompany = (id, name, ticker) => {
-        console.log('sending data ', id, ' ', name, ' ', ticker)
         return this.companyPostRequest('companies/add-company', 1, name, ticker.toUpperCase().replace(/\s/g, ''))
     }
 

@@ -3,6 +3,7 @@ import Chart from "./Chart";
 import Navbar from "../Navbar";
 import QuotationService from "../../Services/QuototationService";
 import './chartPage.css'
+import Error from "../Error"
 
 
 export default function ChartPage() {
@@ -12,6 +13,7 @@ export default function ChartPage() {
     const [quotations, setQuotations] = useState([])
 
     const [dateType, setDateType] = useState('1w')
+    const [error, setError] = useState('')
 
     const [currentQuotation, setCurrentQuotation] = useState({
         ticker: '',
@@ -29,6 +31,13 @@ export default function ChartPage() {
                 choseCurrentQuotation(response.data[0].ticker, response.data[0].companyName,
                     response.data[0].date, response.data[0].price, response.data[0].currencyUnit)
             })
+            .catch(e => {
+                if (e.response) {
+                    setError(e.response.data)
+                } else {
+                    setError(e.message)
+                }
+            })
     }, [])
 
     const dataFormat = (data) => {
@@ -36,8 +45,6 @@ export default function ChartPage() {
     }
 
     const choseCurrentQuotation = (ticker, name, date, price, currencyUnit) => {
-        console.log('current ticker ', ticker)
-        console.log('items: ', ticker, ' ', name, ' ', date, ' ', price)
         setCurrentQuotation({
             ticker,
             name,
@@ -117,7 +124,7 @@ export default function ChartPage() {
     return (
         <div>
             <Navbar/>
-            <div className={'chart-page'}>
+            {error.length > 0 ? <Error errorMessage={error}/> : (<div className={'chart-page'}>
                 <div className={'chart-block'}>
                     <div className={'words'}>
                         <div className={'chart-company-name'}>
@@ -150,11 +157,11 @@ export default function ChartPage() {
                         </button>
                         <button className={'btn btn-warning btn-chart'} onClick={() => setDateType('1w')}>1 день
                         </button>
-                        <button className={'btn btn-warning btn-chart'} onClick={() => setDateType('1m')}>1 неделя
+                        <button className={'btn btn-warning btn-chart'} onClick={() => setDateType('1w')}>1 неделя
                         </button>
-                        <button className={'btn btn-warning btn-chart'} onClick={() => setDateType('1y')}>1 месяц
+                        <button className={'btn btn-warning btn-chart'} onClick={() => setDateType('1m')}>1 месяц
                         </button>
-                        <button className={'btn btn-warning btn-chart'}>1 год</button>
+                        <button className={'btn btn-warning btn-chart'} onClick={() => setDateType('1y')}>1 год</button>
                     </div>
                 </div>
                 <div className="quotes-page-chart">
@@ -174,7 +181,7 @@ export default function ChartPage() {
                     </div>
 
                 </div>
-            </div>
+            </div>)}
         </div>
     )
 }

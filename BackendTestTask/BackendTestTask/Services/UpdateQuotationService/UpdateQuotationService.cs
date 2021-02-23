@@ -2,6 +2,7 @@
 using BackendTestTask.Services.QuotationService;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,12 @@ namespace BackendTestTask.Services.UpdateQuotationService
     {
         public IServiceProvider Services { get; }
         public IOptions<AppSettings> _options { get; }
+        private readonly ILogger<UpdateQuotationService> _logger;
 
         private Timer _timer;
-        public UpdateQuotationService(IServiceProvider services, IOptions<AppSettings> options)
+        public UpdateQuotationService(IServiceProvider services, IOptions<AppSettings> options, ILogger<UpdateQuotationService> logger)
         {
+            _logger = logger;
             Services = services;
             _options = options;
         }
@@ -41,6 +44,7 @@ namespace BackendTestTask.Services.UpdateQuotationService
         /// <param name="o"></param>
         private void DoWork(Object o)
         {
+            _logger.LogInformation("Update quotations in database");
             using (var scope = Services.CreateScope())
             {
                 var scopedProcessingService = scope.ServiceProvider.GetRequiredService<IQuotationService>();

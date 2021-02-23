@@ -6,13 +6,15 @@ import './companyList.css'
 import CompanyService from "../../Services/CompanyService";
 import RedactModalWindow from "./RedactModalWindow";
 import RemoveModalWindow from "./RemoveModalWindow";
-import {forEach} from "react-bootstrap/ElementChildren";
+import Error from "../Error"
 
 export default function CompanyList() {
 
     const companyService = new CompanyService()
 
     const [companies, setCompanies] = useState([])
+
+    const [error, setError] = useState('')
 
     const [rowData, setRowData] = useState({
         type: '',
@@ -23,14 +25,16 @@ export default function CompanyList() {
 
     useEffect(() => {
         companyService.getCompanies().then((response) => {
-            console.log(response)
             setCompanies(response.data)
         })
+            .catch(e => {
+                if (e.response) {
+                    setError(e.response.data)
+                } else {
+                    setError(e.message)
+                }
+            })
     }, [])
-
-    useEffect(() => {
-        console.log(companies)
-    })
 
     const sendRowDataToModalWindow = (type, id, name, ticker) => {
         setRowData({
@@ -61,8 +65,12 @@ export default function CompanyList() {
                 setCompanies(changedCompanies)
 
             })
-            .catch(() => {
-                    alert("Такой тикер уже есть в базе данных")
+            .catch((e) => {
+                    if (e.response) {
+                        alert(e.response.data)
+                    } else {
+                        alert(e.message)
+                    }
                 }
             )
     }
@@ -77,14 +85,16 @@ export default function CompanyList() {
                 }
                 setCompanies(oldCompanies => [...oldCompanies, company])
             })
-            .catch(() => {
-                alert("Такой тикер уже есть в базе данных")
+            .catch((e) => {
+                if (e.response) {
+                    alert(e.response.data)
+                } else {
+                    alert(e.message)
+                }
             })
     }
 
     const removeCompany = (id, name, ticker) => {
-        console.log('removing company')
-        console.log({id, name, ticker})
         companyService.removeCompany(id, name, ticker)
             .then(response => {
                 const oldCompanies = [...companies].filter(item => item.id !== response.data.id)
@@ -127,13 +137,22 @@ export default function CompanyList() {
         })
     }
 
+    if (error.length > 0) {
+        return (
+            <div>
+                <Navbar/>
+                <Error errorMessage={error}/>
+            </div>
+        )
+    }
+
     return (
         <div>
+            <Navbar/>
             <RemoveModalWindow id={rowData.id} name={rowData.name} ticker={rowData.ticker}
                                removeCompany={removeCompany}/>
             <RedactModalWindow type={rowData.type} id={rowData.id} name={rowData.name} ticker={rowData.ticker}
                                changeCompany={changeCompany} addCompany={addCompany}/>
-            <Navbar/>
             <h1 className="companyList">Список компаний</h1>
             <div className="companyListPage">
                 <div className="main-content">

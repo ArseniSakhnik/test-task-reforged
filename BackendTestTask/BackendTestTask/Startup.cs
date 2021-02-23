@@ -118,6 +118,13 @@ namespace BackendTestTask
 
             app.UseMvc();
 
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Strict,
+                HttpOnly = HttpOnlyPolicy.Always,
+                Secure = CookieSecurePolicy.Always
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

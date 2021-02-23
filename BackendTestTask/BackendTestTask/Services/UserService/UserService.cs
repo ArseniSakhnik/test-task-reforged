@@ -35,16 +35,15 @@ namespace BackendTestTask.Services.UserService
         /// <param name="username">Имя пользователя</param>
         /// <param name="password">Пароль пользователя</param>
         /// <returns></returns>
-        public User Authenticate(string username, string password)
+        public User Authenticate(User user)
         {
-            var user = _dataContext.Users.SingleOrDefault(x => x.Username == username && x.Password == password);
-
             // return null if user not found
             if (user == null)
             {
                 return null;
             }
 
+            _logger.LogInformation("Creating user token");
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Value.Secret);
@@ -60,9 +59,71 @@ namespace BackendTestTask.Services.UserService
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             user.Token = tokenHandler.WriteToken(token);
+            _logger.LogInformation("User without password and salt has been returned");
 
-            return user.WithoutPassword();
+            return user.WithoutPassword().WithoutSalt();
         }
 
+        public User GetUserByUsername(string username)
+        {
+            _logger.LogInformation("Set user salt in database");
+            var user = _dataContext.Users.SingleOrDefault(u => u.Username == username);
+
+            return user;
+        }
+
+        public bool RemoveUserSalt(string username)
+        {
+            _logger.LogInformation("Remove user salt in database");
+            try
+            {
+                var user = _dataContext.Users.Where(u => u.Username == username).SingleOrDefault();
+
+                if (user == null)
+                {
+                    _logger.LogInformation("User has not been found");
+                    return false;
+                }
+
+                user.Salt = null;
+                _dataContext.SaveChanges();
+                _logger.LogInformation("Salt has been removed");
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"An exception was received while working with the database: {ex.Message}");
+                return false;
+            }
+        }
+
+
+        public bool SetUserSalt(string username, byte[] salt)
+        {
+            _logger.LogInformation("Set user salt in database");
+            try
+            {
+                var user = _dataContext.Users.Where(u => u.Username == username).SingleOrDefault();
+
+                if (user == null)
+                {
+                    _logger.LogWarning("Use has not been found");
+                    return false;
+                }
+
+                user.Salt = salt;
+                _dataContext.SaveChanges();
+
+                _logger.LogWarning("User salt has been removed");
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning($"An exception was received while working with the database: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

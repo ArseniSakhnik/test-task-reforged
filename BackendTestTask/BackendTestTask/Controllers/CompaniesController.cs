@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -42,14 +43,15 @@ namespace BackendTestTask.Controllers
                 if (companies == null)
                 {
                     _logger.LogWarning("Failed to get-companies");
-                    return BadRequest(new { message = "Не удалось получить компании" });
+                    return BadRequest("Companies have not been found");
                 }
                 _logger.LogInformation("Returning a response to a request for get-companies");
                 return Ok(companies);
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest(ex.Message);
+                _logger.LogInformation("Failed to get-companies");
+                return BadRequest("Failed request");
             }
         }
 
@@ -62,29 +64,37 @@ namespace BackendTestTask.Controllers
         public IActionResult AddCompany([FromBody] CompanyRequestModel model)
         {
 
-            if (!(model.Name.Length > 0 && model.Ticker.Length > 0))
-            {
-                return BadRequest();
-            }
 
             _logger.LogInformation("Starting add-company request");
+
+            if (model.Name.Length == 0 || model.Ticker.Length == 0)
+            {
+                return BadRequest("Please fill name and ticker fields");
+            }
+
             try
             {
                 var company = _companyService.AddCompany(model.Name, model.Ticker);
                 if (company != null)
                 {
-                    _logger.LogInformation("Returning a response to a request for add-company");
+                    _logger.LogWarning("Returning a response to a request for add-company");
                     return Ok(company);
                 }
                 else
                 {
                     _logger.LogWarning("Failed to add-company");
-                    return BadRequest("Не удалось добавить компанию");
+                    return BadRequest("Failed request");
                 }
             }
-            catch (Exception ex)
+            catch (DuplicateNameException)
             {
-                return BadRequest(ex.Message);
+                _logger.LogInformation("Failed request");
+                return BadRequest("The company with the specified data already exists");
+            }
+            catch (Exception)
+            {
+                _logger.LogInformation("Failed request");
+                return BadRequest("Failed add company");
             }
         }
 
@@ -96,13 +106,13 @@ namespace BackendTestTask.Controllers
         [HttpPost("remove-company")]
         public IActionResult RemoveCompany([FromBody] CompanyRequestModel model)
         {
+            _logger.LogInformation("Starting remove-company request");
 
             if (!(model.Name.Length > 0 && model.Ticker.Length > 0))
             {
-                return BadRequest("Invalid input data");
+                return BadRequest("Please fill name and ticker fields");
             }
 
-            _logger.LogInformation("Starting remove-company request");
             try
             {
                 if (_companyService.RemoveCompany(model.Id))
@@ -113,12 +123,13 @@ namespace BackendTestTask.Controllers
                 else
                 {
                     _logger.LogWarning("Failed to remove-company");
-                    return BadRequest("Не удалось удалить запись");
+                    return BadRequest("The company with specified data has not been found");
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                return BadRequest(ex.Message);
+                _logger.LogInformation("Failed to remove-company");
+                return BadRequest("Failed remove company request");
             }
         }
 
@@ -133,10 +144,11 @@ namespace BackendTestTask.Controllers
 
             if (!(model.Name.Length > 0 && model.Ticker.Length > 0))
             {
-                return BadRequest("Invalid input data");
+                return BadRequest("Please fill name and ticker fields");
             }
-                
+
             _logger.LogInformation("Starting change-company request");
+
             try
             {
                 if (_companyService.ChangeCompany(model.Id, model.Name, model.Ticker))
@@ -147,12 +159,18 @@ namespace BackendTestTask.Controllers
                 else
                 {
                     _logger.LogWarning("Failed to change-company");
-                    return BadRequest("Не удалось изменить запись");
+                    return BadRequest("Company with specified data has not been found");
                 }
             }
-            catch (Exception ex)
+            catch (DuplicateNameException)
             {
-                return BadRequest(ex.Message);
+                _logger.LogInformation("Failed to change-company");
+                return BadRequest("Company with specified data has already exists");
+            }
+            catch
+            {
+                _logger.LogInformation("Failed to change-company");
+                return BadRequest("Failed change company request");
             }
         }
     }

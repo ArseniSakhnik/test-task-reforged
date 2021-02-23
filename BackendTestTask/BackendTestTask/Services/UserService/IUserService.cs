@@ -12,6 +12,9 @@ namespace BackendTestTask.Services.UserService
     /// </summary>
     public interface IUserService
     {
-        User Authenticate(string username, string password);
+        User Authenticate(User user);
+        bool SetUserSalt(string username, byte[] salt);
+        bool RemoveUserSalt(string username);
+        User GetUserByUsername(string username);
     }
 }

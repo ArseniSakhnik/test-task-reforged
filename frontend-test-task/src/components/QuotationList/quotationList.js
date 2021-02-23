@@ -4,21 +4,26 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import './quototations.css'
 import QuotationService from "../../Services/QuototationService";
+import Error from "../Error";
 
 export default function QuotationList() {
 
     const quotationService = new QuotationService()
 
     const [quotations, setQuotations] = useState([])
+    const [error, setError] = useState('')
 
     useEffect(() => {
         quotationService.getLastQuotations()
             .then(response => {
-                console.log(response.data)
                 setQuotations(response.data)
             })
-            .catch((ex) => {
-                console.log(ex.message)
+            .catch((e) => {
+                if (e.response) {
+                    setError(e.response.data)
+                } else {
+                    setError(e.message)
+                }
             })
     }, [])
 
@@ -46,7 +51,7 @@ export default function QuotationList() {
     return (
         <div>
             <Navbar/>
-            <div className="quotes-page">
+            {error.length > 0 ? <Error errorMessage={error}/> : (<div className="quotes-page">
                 <div className=' quotes-table'>
                     <h1 className="quotes">Котировки</h1>
                     <table className="table quote-table-area">
@@ -63,7 +68,7 @@ export default function QuotationList() {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div>)}
         </div>
     )
 }

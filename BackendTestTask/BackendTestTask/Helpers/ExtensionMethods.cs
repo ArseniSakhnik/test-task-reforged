@@ -25,5 +25,13 @@ namespace BackendTestTask.Helpers
             user.Password = null;
             return user;
         }
+
+        public static User WithoutSalt(this User user)
+        {
+            if (user == null) return null;
+
+            user.Salt = null;
+            return user;
+        }
     }
 }

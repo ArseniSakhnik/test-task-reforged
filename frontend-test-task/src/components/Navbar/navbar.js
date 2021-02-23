@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import './navbar.css'
-import {Link} from "react-router-dom";
+import {Link, useLocation, useHistory} from "react-router-dom";
 
 
 export default function Navbar() {
@@ -11,17 +11,22 @@ export default function Navbar() {
         return localStorage.getItem('userData') === null ? '' : JSON.parse(localStorage.getItem('userData')).username
     })
 
+    const history = useHistory()
+
+    const location = useLocation()
+
     const logOut = () => {
         localStorage.removeItem('userData')
-        window.location.reload()
+        history.go(0)
     }
 
+    const url = location.pathname
+
     const settingsItem = () => {
-        console.log('here ')
         if (localStorage.getItem('userData') !== null && JSON.parse(localStorage.getItem('userData')).role === 'Admin') {
             return (
                 <li className="nav-item dropdown">
-                    <a className={window.location.href.includes('company-list') ? "nav-link dropdown-toggle navbar-item active-link" : 'nav-link dropdown-toggle navbar-item'}
+                    <a className={url === '/company-list' ? "nav-link dropdown-toggle navbar-item active-link" : 'nav-link dropdown-toggle navbar-item'}
                        id="navbarDropdown"
                        role="button" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
@@ -29,8 +34,8 @@ export default function Navbar() {
                     </a>
                     <div className="dropdown-menu dropdown-link-menu" aria-labelledby="navbarDropdown">
                         <Link to={{pathname: '/company-list'}}
-                              className={window.location.href.includes('company-list') ? "dropdown-item navbar-item dropdown-link active-link" : 'dropdown-item navbar-item dropdown-link'}
-                              href="#">Список компаний</Link>
+                              className={url === '/company-list' ? "dropdown-item navbar-item dropdown-link active-link" : 'dropdown-item navbar-item dropdown-link'}
+                              >Список компаний</Link>
                     </div>
                 </li>
             )
@@ -63,8 +68,15 @@ export default function Navbar() {
         )
     }
 
-
-    console.log(name)
+    const navbarAuthorizationLink = () => (<div>
+        <ul className="navbar-nav ">
+            <li className={'nav-item'}>
+                <Link to={{pathname: '/authentication'}}
+                        className={url === '/authentication' ? "nav-link navbar-item  active-link" : 'nav-link navbar-item'}
+                >Войти</Link>
+            </li>
+        </ul>
+    </div>)
 
     return (
         <div>
@@ -78,19 +90,19 @@ export default function Navbar() {
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
                             <Link to={{pathname: '/charts'}}
-                                  className={window.location.href.includes('charts') ? "nav-link navbar-item active-link" : 'nav-link navbar-item'}>
+                                  className={url ==='/charts' ? "nav-link navbar-item active-link" : 'nav-link navbar-item'}>
                                 Графики
                             </Link>
                         </li>
                         <li className="nav-item">
                             <Link to={{pathname: '/quotation-list'}}
-                                  className={window.location.href.includes('quotation-list') ? "nav-link navbar-item  active-link" : 'nav-link navbar-item'}>
+                                  className={url ==='/quotation-list' ? "nav-link navbar-item  active-link" : 'nav-link navbar-item'}>
                                 Котировки
                             </Link>
                         </li>
                         {settingsItem()}
                     </ul>
-                    {name.length > 0 ? navbarAuthorizedAttributes() : <div></div>}
+                    {name.length > 0 ? navbarAuthorizedAttributes() : navbarAuthorizationLink()}
                 </div>
             </nav>
         </div>

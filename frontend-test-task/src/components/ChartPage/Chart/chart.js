@@ -107,7 +107,6 @@ export default function Chart({ticker, time}) {
                     date.getHours(),
                     date.getMinutes(),
                     date.getSeconds())
-
             }
         }
 
